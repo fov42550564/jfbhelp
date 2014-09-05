@@ -1,0 +1,41 @@
+1.sudo apt-get install git
+2.sudo adduser git
+3.sudo git init --bare sample.git
+4.sudo chown -R git:git sample.git 修改所有者
+5./home/git/.ssh/authorized_keys 如果没有这个文件，就创建
+6.在客户端ssh-keygen 生成ssh key
+7.将~/.ssh/id_rsa.pub复制到/home/git/.ssh/authorized_keys 一行一个
+8.使用git clone git@myhost:project1.git下载代码
+9.使用git pull git push交换代码
+
+
+添加到远程分支
+git remote add origin git@github.com:fov42550564/node-qiubai.git
+
+推送到远程(git push [远程名] [本地分支]:[远程分支])
+git push -u origin master
+
+查看远程分支
+git branch -r
+
+查看远程仓库
+git remote -v
+
+git remote show origin 显示远程库origin里的资源
+git remote show 查看远程库
+git clone git://github.com/schacon/grit.git 从服务器上将代码给拉下来
+git fetch 相当于是从远程获取最新版本到本地，不会自动merge
+
+如果push不成功没有权限
+chown -R git:git puzzle.git
+必须创建分支才能push
+
+git不允许用push操作更新non-bare的仓库，因为这样的操作会导致remote仓库的索引 （index）和工作树（work tree）与你push的不一致，此时需要通过‘git reset ????ard’操作来使得工作树与HEAD索引相匹配。 可以通过在remote端，设置git的配置文件（.git/config），在其中添加如下内容： 
+[receive]
+denyCurrentBranch = false
+或者使用如下命令
+$ git config receive.denyCurrentBranch ignore  # git config 相当于 git config --local, local为默认值
+这样就可以通过git push提交自己的稳定更新，要想在push后在remote端看到更新的效果，执行git reset ????ard即可。
+
+
+

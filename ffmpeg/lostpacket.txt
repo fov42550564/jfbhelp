@@ -1,0 +1,18 @@
+视频丢包处理有三种种办法，分别针对不同丢包率情况，这是一个优秀视频引擎不可缺少的模块。
+
+
+1. Dynamic Rate Adjustment using RTCP 
+
+客户端通过 RTCP协议反馈自己的丢包情况，当丢包大于 10%时，编码器降低码率，减少带宽占用，但同时也降低了视频质量
+
+与此相关的RFC为 RFC 6035,RFC 36611
+
+2. Forward Error Correction (FEC) 
+
+Forward Error Correction (a.k.a FEC)  机制用于处理丢包率低于 10%情况，同时也可以用于关键帧的保护，
+
+与此相关的RFC 为 RFC 5109
+
+3. NACK,TMMBR/TMMBN, FIR
+
+    这些机制的思想是丢包重传，通过RTCP 扩展反馈 ，可以重传关键帧等，与此相关的RFC 为 RFC 5104

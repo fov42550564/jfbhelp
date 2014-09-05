@@ -1,0 +1,8 @@
+1.vbox
+ffmpeg -i 2.mp4 -vf drawbox=x=10:y=10:w=100:h=100:color=pink@0.5:t=max -y 5.mp4
+
+2.amix
+ffmpeg -i 3.mp4 -i 2.mp4 -filter_complex amix=inputs=2:duration=first:dropout_transition=2 8.mp4
+
+3.ajoin
+ffmpeg -i 2.mp4 -i 3.mp4 -filter_complex join=inputs=2 6.mp4

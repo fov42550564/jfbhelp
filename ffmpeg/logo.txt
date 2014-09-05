@@ -1,0 +1,24 @@
+1.ffmpeg -y -i 1.mp4 -acodec copy -b 300k -vfilters "movie=0:png:watermark.png [wm];[in][wm] overlay=5:5:1 [out]" 2.mp4
+其中wm为设置的名称，可以随便取，但是必须前后一致.
+overlay参数说明:
+3个参数依次是：水印距离视频左边的距离，水印距离视频上边的距离，是否支持透明水印
+1)左上角
+overlay=10:10
+2)右上角
+overlay=main_w-overlay_w-10:10
+3)左下角
+overlay=10:main_h-overlay_h-10
+4)右下角
+overlay=main_w-overlay_w-10:main_h-overlay_h-10
+
+2.添加多个水印
+ffmpeg -i 1.mp4 -t 5 -vf " \ 
+movie=1.png[ltwm]; \
+	  movie=1.png[lbwm]; \
+	  movie=1.png[rtwm]; \
+	  movie=1.png[rbwm]; \
+	  [in][ltwm]overlay=5:5:1[int]; \
+	  [int][lbwm]overlay=5:main_h-overlay_h-5:1[int]; \
+	  [int][rtwm]overlay=main_w-overlay_w-5:5:1[int]; \
+	  [int][rbwm]overlay=main_w-overlay_w-5:main_h-overlay_h-5:1[out]" 2.mp4 -y
+

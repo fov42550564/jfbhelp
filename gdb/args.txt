@@ -1,0 +1,3 @@
+et args 可指定运行时参数。
+如:set args -f 20 -t 40
+show args 命令可以查看设置好的运行参数。

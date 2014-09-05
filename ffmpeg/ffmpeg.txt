@@ -1,0 +1,58 @@
+分割：
+ffmpeg -ss START -t DURATION -i in.mp4 -vcodec copy -acodec copy out.mp4
+将所有的帧转化为帧内编码：
+ffmpeg -i in.mp4 -qscale 0 -intra out.mp4
+将帧转化为帧内编码后，在分割，时间会更加准确，因为分割是按照关键帧来分割的。
+
+合并：
+先将mp4转化为mpeg，然后使用cat合并两个文件，合并后再转化为mp4
+ffmpeg -i in.mp4 -f mpeg -y -r 29.97 out.mp4
+cat INPUT1 INPUT2 > out.mp4
+ffmpeg -i in.mp4 -f mpr -y out.mp4
+这种方法很耗时，因为有格式转换
+
+使用Concat demuxer
+list=>
+#this is a comment
+file 1.mp4
+file 2.mp4
+ffmpeg -f concat -i list -c copy 3.mp4
+
+提取音频裸数据
+ffmpeg -i 1.mp4 -f s16le -acodec pcm_s16le output.raw
+
+使用Concat protocol
+ffmpeg -i 1.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts intermediate1.ts
+ffmpeg -i 2.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts intermediate2.ts
+ffmpeg -i "concat:intermediate1.ts|intermediate2.ts" -c copy -bsf:a aac_adtstoasc 3.mp4
+
+获取视频第一帧图像：
+ffmpeg -i in.mp4 out.[bmp|jpg]
+
+截图：
+ffmpeg -i in.mp4 -ss 10 -t 0.001 out.[bmp|jpg]
+
+图像转换：
+ffmpeg -i in.mp4.[jpg] out.[bmp]
+
+视频裁剪
+ffmpeg -i demo.mp4 -filter:v "crop=10:20:100:100" out.mp4
+
+视频添加到图像上面：
+ffmpeg -i in.mp4 -vf "pad:width:height:xoffset:yoffset:color" out.mp4
+
+提取视频yuv数据
+ffmpeg -i in.mp4 [-s 320x240] out.yuv
+图片提取yuv数据
+ffmpeg -i in.png -f rawvideo -pix_fmt yuv420p -vcodec rawvideo out.yuv
+
+提取aac数据
+ffmpeg -i in.mp4 -acodec copy out.aac
+
+提取h264数据
+ffmpeg -i in.mp4 -f h264  -vcodec copy out.h264
+
+提取rgb数据
+ffmpeg -i in.mp4 -f rawvideo -pix_fmt rgb24 -vcodec rawvideo out.raw 
+
+

@@ -1,0 +1,16 @@
+1.将图片序列合成视频
+ffmpeg -f image2 -i image%d.jpg video.mp4
+图片命名为image1.jpg, image2.jpg....注意从1开始命名
+
+2.将视频分解成图片序列
+ffmpeg -i video.mpg image%d.jpg
+支持的图片格式有：PGM, PPM, PAM, PGMYUV, JPEG, GIF, PNG, TIFF, SGI
+
+3.将视频转化为gif
+ffmpeg -i 1.mp4 -vframes 5 -f gif -pix_fmt rgb24 a.gif
+
+4.将图片序列转化为gif
+ffmpeg -f image2 -i image%d.jpg 1.gif
+
+5.裁剪gif图片
+ffmpeg -i 1.gif -f gif -pix_fmt rgb24 -s 100x100 2.gif

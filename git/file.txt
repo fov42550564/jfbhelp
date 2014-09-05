@@ -1,0 +1,12 @@
+分支信息保存在refs/heads目录中
+当前分支在HEAD文件中
+
+查看类型
+cat refs/heads/master | xargs git cat-file -t
+
+查看主分支最新提交的内容
+cat refs/heads/master | xargs git cat-file -p 
+
+
+
+

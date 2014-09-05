@@ -1,0 +1,35 @@
+git add *.txt     //添加指定文件
+git add README    //添加单个文件
+git add .         //添加所有文件包括子目录，但不包括空目录
+
+
+git commit -m “no1”             //全部提交
+git commit -m “no1” someFile    //提交指定文件
+git commit -C HEAD -a --amend    //复用HEAD留言，增补提交（修改小错误，而不增加提交记录，掩盖自己的小马虎）
+git commit --amend -m "comment" //修改最后一次提交的注释
+
+-m “提交的说明”
+-a 动把所有已经跟踪过的文件暂存,并提交.(工作目录中修改过的文件都提交到版本库，不需一个一个手动add了)
+—amend 增补提交
+-C 复用指定提交的提交留言
+-c 打开编辑器在已有的提交基础上编辑修改
+
+取消已经暂存的文件
+git reset HEAD file
+
+git reset —hard HEAD //所有未提交的内容清空，这会让"git diff" 和"git diff —cached"命令的显示法都变为空
+git reset —soft HEAD //复位版本库，暂存差异，便于提交中发现错误需要更改时有用（例如私人密码放到里边了）
+
+git reset —hard HEAD //用于完全恢复磁盘数据到某个版本
+git reset —soft HEAD //可以撤销某些版本
+
+重新修改HEAD版本
+git reset —soft HEAD^
+git commit -m ""
+
+
+git revert HEAD //创建一个反向的新提交抵消原来的提交改动
+如果需要反转多个，必须从最后的开始反转, 加 -n可以不马上提交，之后一起提交。
+git revert -n HEAD
+git revert -n 54efhds
+git commit -m “revert head and 54efhds”

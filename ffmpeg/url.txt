@@ -1,0 +1,16 @@
+ffmpeg read video and audio
+http://www.cnblogs.com/elesos/archive/2013/03/08/2949478.html
+
+
+ffmpeg main
+http://blog.csdn.net/nkmnkm/article/details/7173296
+
+
+time scale
+http://www.rosoo.net/a/201107/14727.html
+
+
+ffmpeg help document
+http://ffmpeg.org/ffmpeg-filters.html#toc-drawbox
+
+http://linuxconfig.org/ffmpeg-audio-format-conversions

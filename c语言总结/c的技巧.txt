@@ -1,0 +1,66 @@
+1.初始化数组，结构体
+int a[]={
+	[0]=1,
+	[5]=1,
+	[3]=1,
+};
+结果sizeof(a)为6*4
+struct fang
+{
+	int a;
+	int b;
+};
+
+初始化有两种：
+struct fang f={
+	a:123,
+	b:234,
+};
+struct fang f={
+	.a=123,
+	.b=234,
+};
+
+
+2.复合常量
+void f(int *a)
+{
+	printf("%d,%d,%d",*a,*(a+1),*(a+2));
+}
+f((int[]){5,6,7});
+
+3.数组外部声明
+file[a]:char a[6]="fang";
+file[b]:extern char a[];
+使用extern char *a则不行，类型  T 的指针和类型 T 的数组并非同种类型。
+
+
+3.数组名和下标
+int a[]={1,2,3};
+0[a]和a[0]是等价的哦！
+因为a[0]=*(int *)(a+0);0[a]=*(int *)(0+a);
+
+
+4.sizeof('a')=sizeof(int)
+C 语言中的字符常数是 int 型
+
+5.栈溢出
+func(10);
+....
+void func(int a)
+{
+	char val[10];
+	printf("%d\n", a); //a=10
+	memset(val, 0, 100);
+	printf("%d\n", a); //a=0
+}
+
+调用函数时，a入栈，a:ptr=0100;然后val[]入栈，val[9]:ptr=0096,因此，val[10]对应的就是a:ptr,因此a会被改变，有时候造成很严重的错误。
+最关键的的是，当改变的栈很多时，会影响后面的函数，因此有时候这个罪魁祸首不会报错，反而后面的会报错，因此要多加注意。
+
+
+
+
+
+
+

@@ -1,0 +1,20 @@
+
+seek以后，就是read，read以后，就是解码，解码后，得到真实时间戳。
+
+seek的参数只是大概参数，并不一定就是真实时间戳。
+
+举例，现在有帧10幅，帧速为每秒10帧，则这30帧的时间戳依次为0、0.1、0.2、0.3、……0.9秒
+
+其中索引为0和4的为关键帧，就是第1帧和第5帧。
+
+现在开始seek，参数为0.15。
+
+如果seek flags为AVSEEK_FLAG_BACKWARD，则seek后，位置将会是第1帧，read、decode，得到时间戳为0，如果想进一步获得距离参数0.15接近的帧，则继续read、decode，将会得到0.1帧，对比0.15，比较接近，如不满意，继续read、decode，将会得到0.2帧，如不满意，那么就没有比0.1、0.2更加满意的帧了。当然，如果seek参数是0.1或0.2，那就没什么好说的了。如果参数是0.11那么，0.1比较接近，如果参数是0.19，那么0.2比较接近。看自己的情况取舍了。
+
+如果seek flags没有AVSEEK_FLAG_BACKWARD，则seek后，位置将会是第5帧，read、decode，得到时间戳为0.4，很显然，距离参数0.15差太多，如果继续read、decode，将会差更多。所以，此时应该选用AVSEEK_FLAG_BACKWARD这个flags。
+
+上面seek flags没有AVSEEK_FLAG_ANY，所以seek结果是第1帧或第5帧这样的关键帧。
+
+如果seek flags有AVSEEK_FLAG_ANY和AVSEEK_FLAG_BACKWARD，则seek后，位置将会是0.1，read、decode，得到时间戳为0.1，但这个帧画面一般来说会是花屏，因为缺少关键帧作为参照。
+
+如果seek flags有AVSEEK_FLAG_ANY但没有AVSEEK_FLAG_BACKWARD，则seek后，位置将会是0.2，read、decode，得到时间戳为0.2，但这个帧画面一般来说会是花屏，因为缺少关键帧作为参照。

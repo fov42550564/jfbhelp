@@ -1,0 +1,12 @@
+1. 播放yuv数据
+ffplay -f rawvideo -video_size 640x480 a.yuv
+
+2. 播放rgb数据
+ffplay -f rawvideo -video_size 568x320 -pixel_format rgb24 -framerate 20 -loop 0 2.rgb
+
+3. 播放pcm数据
+ffplay -f s16le -ar 41000 -ac 2 -loop 0 3.pcm
+
+4.播放rgba数据
+ffplay -f rawvideo -pixel_format rgba 1.rgba -video_size 100x100
+
