@@ -1,0 +1,13 @@
+GLSL的vec4有3种分量形式xyzw/rgba/stpq, 注意到的r分量是指颜色r分量, 习惯上的纹理坐标分量strq的r由于和颜色r冲突,改作p
+
+x,y,z,w 	Useful for points, vectors, normals
+r,g,b,a 	Useful for colors
+s,t,p,q 	Useful for texture coordinates
+
+
+
+vec4 TestVec = vec4(1.0, 2.0, 3.0, 4.0);
+vec4 a = TestVec.xyzw;    // (1.0, 2.0, 3.0, 4.0)
+vec4 b = TestVec.wxyz;    // (4.0, 1.0, 2.0, 3.0)
+vec4 c = TestVec.xxyy;    // (1.0, 1.0, 2.0, 2.0)
+vec2 d = TextVec.zx;      // (3.0, 1.0)

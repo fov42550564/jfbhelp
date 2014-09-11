@@ -1,0 +1,285 @@
+GL_RED( x ) = RGBA( x, 0, 0, 1 )
+GL_GREEN( x ) = RGBA( 0, x, 0, 1 )
+GL_BLUE( x ) = RGBA( 0, 0, x, 1 )
+GL_ALPHA( x ) = RGBA( 0, 0, 0, x )
+GL_RGB( x, y, z ) = RGBA( x, y, z, 1 )
+GL_RGBA( x, y, z, w ) = RGBA( x, y, z, w )
+GL_LUMINANCE( x ) = RGBA( x, x, x, 1 )
+GL_INTENSITY( x ) = RGBA( x, x, x, x )
+GL_LUMINANCE_ALPHA( x, y ) = RGBA( x, x, x, y )
+
+输入的时候按照等号左边的格式读取内存，按照右边是格式写入内存，去获取的格式必须和存入的时候保持一致才能取数据
+
+*******************************************************
+	函数原型:
+
+	void glTexImage2D(GLenum target,GLint level,GLint components,GLsizei width, glsizei height,GLint border,GLenum format,GLenum type, const GLvoid *pixels);
+
+	函数说明：
+
+	定义一个二维纹理映射。其中
+
+	参数target是常数GL_TEXTURE_2D。
+
+	参数level表示多级分辨率的纹理图像的级数，若只有一种分辨率，则level设为0。
+	　　参数components是一个从1到4的整数，指出选择了R、G、B、A中的哪些分量用于调整和混合，1表示选择了R分量，2表示选择了R和A两个分量，3表示选择了R、G、B三个分量，4表示选择了R、G、B、A四个分量。
+	　　参数width和height给出了纹理图像的长度和宽度，参数border为纹理边界宽度，它通常为0，width和height必须是2m+2b，这里m是整数，长和宽可以有不同的值，b是border的值。纹理映射的最大尺寸依赖于OpenGL，但它至少必须是使用64x64（若带边界为66x66），若width和height设置为0，则纹理映射有效地关闭。
+	　　参数format和type描述了纹理映射的格式和数据类型，它们在这里的意义与在函数glDrawPixels()中的意义相同，事实上，纹理数据与glDrawPixels()所用的数据有同样的格式。参数format可以是GL_COLOR_INDEX、GL_RGB、GL_RGBA、GL_RED、GL_GREEN、GL_BLUE、GL_ALPHA、GL_LUMINANCE或GL_LUMINANCE_ALPHA（注意：不能用GL_STENCIL_INDEX和GL_DEPTH_COMPONENT）。类似地，参数type是GL_BYPE、GL_UNSIGNED_BYTE、GL_SHORT、 GL_UNSIGNED_SHORT、GL_INT、GL_UNSIGNED_INT、GL_FLOAT或GL_BITMAP。
+	　　参数pixels包含了纹理图像数据，这个数据描述了纹理图像本身和它的边界。
+
+*******************************************************
+
+ void glTexImage2D (GLenum target, GLint level, GLint internalFormat, GLsizei width, GLsizei height, GLint border, GLenum format, GLenum type, const GLvoid* texels);
+
+   
+
+    参数 target 是 GL_TEXTURE_2D （二维纹理) 或 GL_PROXY_TEXTURE_2D （二维代理纹理), 代理纹理暂且不提。
+
+    参数 level 指定了纹理映射细节的级别，用在mipmap中。 基本的纹理图像级别为0， 在后面的mipmap部分讲解。
+
+    参数 internalFormat 指定了纹理存储在显存中的内部格式， 取值在下表， 为兼容 OpenGL1.0 internalFormat 可以取值1，2，3，4 分别对应常量 LUMINANCE, LUMINANCE_ALPHA,  RGB,  RGBA.
+
+格式
+	
+
+注解
+
+GL_ALPHA
+	
+
+Alpha 值
+
+GL_DEPTH_COMPONENT
+	
+
+深度值
+
+GL_LUMINCE
+	
+
+灰度值
+
+GL_LUMINANCE_ALPHA
+	
+
+灰度值和 Alpha 值
+
+GL_INTENSITY
+	
+
+亮度值
+
+GL_RGB
+	
+
+Red, Green, Blue三原色值
+
+GL_RGBA
+	
+
+Red, Green, Blue 和Alpha 值
+
+纹理内部格式
+
+    参数 width 和 height 定义了纹理映射的大小，前面已经说过纹理映射就是一个二维数组。 和 glDrawPixels() 一样， 纹理映射的宽度和高度必须是 2 的整数次幂。
+
+    参数 border 注明了纹理是否有边框。无边框取值为 0， 有边框取值为 1， 边框的颜色由 GL_TEXTURE_BORDER_COLOR 选项设置。
+
+    接下来的三个参数主要定义了图像数据的格式。
+
+    参数 format 定义了图像数据数组 texels 中的格式。可以取值如下：
+
+格式
+	
+
+注解
+
+GL_COLOR_INDEX
+	
+
+颜色索引值
+
+GL_DEPTH_COMPONENT
+	
+
+深度值
+
+GL_RED
+	
+
+红色像素值
+
+GL_GREEN
+	
+
+绿色像素值
+
+GL_BLUE
+	
+
+蓝色像素值
+
+GL_ALPHA
+	
+
+Alpha 值
+
+GL_RGB
+	
+
+Red, Green, Blue 三原色值
+
+GL_RGBA
+	
+
+Red, Green, Blue 和Alpha 值
+
+GL_BGR
+	
+
+Blue, Green, Red 值
+
+GL_BGRA
+	
+
+Blue, Green, Red 和Alpha 值
+
+GL_LUMINANCE
+	
+
+灰度值
+
+GL_LUMINANCE_ALPHA
+	
+
+灰度值和 Alpha 值
+
+图像数据数组 texels 格式
+
+    参数 type 定义了图像数据数组 texels 中的数据类型。可取值如下
+
+数据类型
+	
+
+注解
+
+GL_BITMAP
+	
+
+一位(0或1)
+
+GL_BYTE
+	
+
+带符号8位整形值(一个字节)
+
+GL_UNSIGNED_BYTE
+	
+
+不带符号8位整形值(一个字节)
+
+GL_SHORT
+	
+
+带符号16位整形值(2个字节)
+
+GL_UNSIGNED_SHORT
+	
+
+不带符号16未整形值(2个字节)
+
+GL_INT
+	
+
+带符号32位整形值(4个字节)
+
+GL_UNSIGNED_INT
+	
+
+不带符号32位整形值(4个字节)
+
+GL_FLOAT
+	
+
+单精度浮点型(4个字节)
+
+GL_UNSIGNED_BYTE_3_3_2
+	
+
+压缩到不带符号8位整形：R3,G3,B2
+
+GL_UNSIGNED_BYTE_2__3_REV
+	
+
+压缩到不带符号8位整形：B2,G3,R3
+
+GL_UNSIGNED_SHORT_5_6_5
+	
+
+压缩到不带符号16位整形：R5,G6,B5
+
+GL_UNSIGNED_SHORT_5_6_5_REV
+	
+
+压缩到不带符号16位整形：B5,G6,R5
+
+GL_UNSIGNED_SHORT_4_4_4_4
+	
+
+压缩到不带符号16位整形:R4,G4,B4,A4
+
+GL_UNSIGNED_SHORT_4_4_4_4_REV
+	
+
+压缩到不带符号16位整形:A4,B4,G4,R4
+
+GL_UNSIGNED_SHORT_5_5_5_1
+	
+
+压缩到不带符号16位整形：R5,G5,B5,A1
+
+GL_UNSIGNED_SHORT_1_5_5_5_REV
+	
+
+压缩到不带符号16位整形：A1,B5,G5,R5
+
+GL_UNSIGNED_INT_8_8_8_8
+	
+
+压缩到不带符号32位整形：R8,G8,B8,A8
+
+GL_UNSIGNED_INT_8_8_8_8_REV
+	
+
+压缩到不带符号32位整形：A8,B8,G8,R8
+
+GL_UNSIGNED_INT_10_10_10_2
+	
+
+压缩到32位整形：R10,G10,B10,A2
+
+GL_UNSIGNED_INT_2_10_10_10_REV
+	
+
+压缩到32位整形：A2,B10,G10,R10
+
+图像数据数组 texels 中数据类型
+
+    你可能会注意到有压缩类型， 先看看 GL_UNSIGNED_BYTE_3_3_2, 所有的 red, green 和 blue 被组合成一个不带符号的8位整形中，在 GL_UNSIGNED_SHORT_4_4_4_4 中是把 red, green , blue 和 alpha 值打包成一个不带符号的 short 类型。
+
+    最后一个参数是 texels, 这个指针指向实际的图像数据（你自己生成的或是从文件中加载的）。OpenGL 会按照 type 参数指定的格式来读取这些数据，
+
+    例如， 假设你加载了一个 RGBA 图像到 textureData 中（ 宽高为 textureWidth, textureHeight).你想要用它来指定一个纹理， 可以这样做：
+
+?
+
+1
+
+2
+	
+
+glTexImage2D (GL_TEXTURE_2D, 0, GL_RGBA, textureWidth, textureHeight, 0,
+
+        GL_RGBA, GL_UNSIGNED_BYTE, textureData);
+
+    执行完这个函数后， 纹理会加载，等待被使用。
