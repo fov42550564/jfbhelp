@@ -1,0 +1,13 @@
+使用weinre调试
+1.install nodejs
+2.npm install weinre
+3.weinre --httpPort 8081 --boundHost -all-
+4.在需要测试的网页添加<script src="http://localhost/target/target-script-min.js#tag"></script>
+如果是android模拟器，使用<script src="http://10.0.2.2/target/target-script-min.js#tag"></script>
+5.在chrome浏览器访问http://localhost:8081/client/#tag就可以了
+其中tag为channelid，可以为任意值，但是server和client必须一致
+需要先启动server和client然后再运行网页
+
+使用ripple调试
+1.npm install ripple-emulator
+2.在www目录执行ripple emulate
