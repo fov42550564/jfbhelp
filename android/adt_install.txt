@@ -1,0 +1,8 @@
+在help的Install New SoftWare中增加
+https://dl-ssl.google.com/android/eclipse/
+查看最新的adt版本
+获取版本后使用
+http://dl.google.com/android/ADT-xx.x.x.zip
+来下载离线安装包
+就可以成功安装ADT了
+ 
