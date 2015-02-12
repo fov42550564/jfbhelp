@@ -1,0 +1,17 @@
+1. 打开cygwin，输入 ssh-host-config
+    当询问if privilege separation should be used 时输入 no . 
+    当询问if sshd should be installed as a service 时输入yes . 
+    当询问about the value of CYGWIN environment variable enter 时输入 ntsec .
+    其余询问均输入 no
+2. 打开 控制面板-》管理-》服务 启动名为 CYGWIN sshd 的服务，亦可在cygwin中输入 cygrunsrv --start sshd 启动sshd，
+    输入cygrunsrv --stop sshd停止sshd
+3. 打开cygwin，输入 ssh-keygen，当询问要filenames 和 pass phrases 的时候都点回车，接受默认的值
+4. 命令结束后输入 cd ~/.ssh 转到.ssh目录，输入 ls –l 应该包含两个文件：id_rsa.pub 和 id_rsa
+5. 在第8步的窗口（当前目录在.ssh）中输入 cat id_rsa.pub >> authorized_keys
+6. 输入 ssh localhost 启动SSH
+7. 使用windows账号和密码
+mkpasswd -l > /etc/passwd
+mkgroup -l > /etc/group
+cygrunsrv -R sshd     //删除ssd服务
+ssh-host-config        //重新配置
+cygrunsrv -S sshd     //启动服务
