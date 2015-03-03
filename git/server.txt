@@ -37,5 +37,8 @@ denyCurrentBranch = false
 $ git config receive.denyCurrentBranch ignore  # git config 相当于 git config --local, local为默认值
 这样就可以通过git push提交自己的稳定更新，要想在push后在remote端看到更新的效果，执行git reset ????ard即可。
 
+修改远程url
+git remote set-url origin apple@192.168.211.101:~/baiduyun/git/client.git
+
 
 
