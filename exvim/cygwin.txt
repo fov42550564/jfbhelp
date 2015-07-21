@@ -1,0 +1,4 @@
+1.下载exvim full
+2.解压后执行 ./unix/replace-my-vim.sh
+3.在cygwin-install中安装ctags cscope graphviz
+4.下载id-utils,解压，放到/usr/local/bin下面即可
