@@ -1,0 +1,2 @@
+1.只有configure.in没有configure的工程依次执行aclocal autoheader autoconf automake ./configure make
+
