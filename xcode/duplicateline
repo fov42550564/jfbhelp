@@ -1,0 +1,12 @@
+/Applications/Xcode.app/Contents/Frameworks/IDEKit.framework/Resources/IDETextKeyBindingSet.plist
+
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Custom</key>
+    <dict>
+        <key>Duplicate Current Line</key>
+        <string>selectLine:, copy:, moveToEndOfLine:, insertNewline:, paste:, deleteBackward:</string>
+        <key>Duplicate Current Line2</key>
+        <string>moveToBeginningOfLine:, deleteToEndOfLine:, yank:, insertNewline:, setMark:,  moveToBeginningOfLine:, selectToMark, yank:</string>
+    </dict>

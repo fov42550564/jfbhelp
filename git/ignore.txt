@@ -1,0 +1,3 @@
+非运算
+/xx/*
+!/xx/exclude

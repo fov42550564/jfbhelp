@@ -6,3 +6,12 @@
 6.git init --bare test.git
 7.在客户端就可以git clone apple@192.169.211.106:~/test.git
 
+sudo /usr/sbin/sshd
+如果报错
+sudo ssh-keygen -t dsa -f /etc/ssh_host_dsa_key
+sudo ssh-keygen -t rsa -f /etc/ssh_host_rsa_key
+
+开启服务后执行
+ssh fangyunjiang@localhost
+
+
