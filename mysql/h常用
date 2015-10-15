@@ -1,0 +1,2 @@
+1.删除重复行
+delete from videoTopic where id not in (select * from (select max(id) from videoTopic group by videoId having count(videoId) >1) as b)
