@@ -1,0 +1,112 @@
+<body>
+git shortlog 汇总输出
+<br >
+git log --oneline
+<br >
+git log --pretty=oneline
+<br >
+git log --format="%cn:[%cd]:%s"
+<br >
+git log -p
+<br >
+git log --stat //查看某个版本后面修改的文件记录
+<br >
+git log --shortstat //查看某个版本后面修改的文件记录
+<br >
+git log --author=""
+<br >
+git log --grep=""
+<br >
+git log -S'foo()'
+<br >
+git log --since --before --until --after
+<br >
+
+<br >
+git show bdd3996
+<br >
+git show bdd3996 README  //查看某个版本下具体某个文件
+<br >
+git show --stat VERSION //查看某个版本下修改的文件记录
+<br >
+git show --shortstat VERSION //查看某个版本下修改的简要记录
+<br >
+
+<br >
+git log files
+<br >
+
+<br >
+范围查找：
+<br >
+指定两个版本，用“最老版本..最新版本”这种格式作为查找范围，最老版本在前，最新版本在后
+<br >
+git log 18f822e..0bb3dfb
+<br >
+git log 18f822e..HEAD
+<br >
+git log HEAD~10..HEAD
+<br >
+
+<br >
+^:一个脱字号相当于回溯一个版本。18f822e^是指18f822e之前的那个版本。18f822e^^是指18f822e之前版本的之前版本，以此类推。在windows系统下，如果版本中带有脱字号，则版本须添加双引号。
+<br >
+*~N:波浪字符加数字的操作浮是指回溯N个版本，18f822e~1是指18f822e的父节点，18f822e是指其祖父节点。
+<br >
+以下三种命令输出一样：
+<br >
+git log –1 HEAD^^^
+<br >
+git log –1 HEAD^~2
+<br >
+git log –1 HEAD~3
+<br >
+
+<br >
+
+<br >
+实例：
+<br >
+git log -S"TODO ADD IMPL_API_DECLARE NOT MODIFY" --stat
+<br >
+git log --oneline --before={3.weeks.ago} --after={2010-04-18} --no-merges
+<br >
+git log  –since=”5 hours”
+<br >
+
+<br >
+选项 说明
+<br >
+-(n) 仅显示最近的 n 条提交
+<br >
+–since,–after 仅显示指定时间之后的提交
+<br >
+–until,–before 仅显示指定时间之前的提交
+<br >
+–author 仅显示指定作者相关的提交
+<br >
+–committer 仅显示指定提交者相关的提交
+<br >
+–reverse 按时间倒序显示
+<br >
+-p 按补丁格式显示每个更新之间的差异
+<br >
+–stat 显示每次更新的文件修改统计信息
+<br >
+–shortstat 只显示 –stat 中最后的行数修改添加移除统计
+<br >
+–name-only 仅在提交信息后显示已修改的文件清单
+<br >
+–name-status 显示新增、修改、删除的文件清单
+<br >
+–abbrev-commit 仅显示 SHA-1 的前几个字符，而非所有的 40 个字符
+<br >
+–relative-date 使用较短的相对时间显示（比如，“2 weeks ago”）
+<br >
+–graph 显示 ASCII 图形表示的分支合并历史
+<br >
+–pretty 使用其他格式显示历史提交信息。可用的选项包括 oneline，short，full，fuller 和 format（后跟指定格式）
+<br >
+
+<br >
+</body>
