@@ -1,0 +1,16 @@
+1.当存在pages的时候使用
+git push origin --delete gh-pages
+将其删除
+
+2.checkout 新的工程
+git clone github.com/user/repository.git
+
+3.执行
+cd repository
+git checkout --orphan gh-pages
+git rm -rf .
+然后添加文件
+
+4.上传
+git push origin gh-pages
+
