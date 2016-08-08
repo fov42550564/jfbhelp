@@ -14,4 +14,7 @@ sudo ssh-keygen -t rsa -f /etc/ssh_host_rsa_key
 开启服务后执行
 ssh fangyunjiang@localhost
 
+添加本地远程仓库
+git remoteadd fang@192.168.1.119:/Users/fang/baidu/disk/yxjqd.git
+
 
