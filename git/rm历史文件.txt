@@ -1,0 +1,5 @@
+1. 先执行
+    git filter-branch -f --tree-filter ‘rm -rf vendor/gems‘ HEAD
+    其中 vendor/gems 是要彻底删除的文件夹或者文件
+2. 提交服务器
+     git push origin --force
