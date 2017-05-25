@@ -1,0 +1,20 @@
+http://man.chinaunix.net/newsoft/vi/doc/pattern.html#%2F\@%3C!
+
+\@=   顺序环视
+eg:查找后面是sql的my： /my\(sql\)\@=
+
+\@!   顺序否定环视
+eg:查找后面不是sql的my： /my\(sql\)\@!
+
+\@<=  逆序环视
+eg: 查找前面是my的sql： /\(my\)\@<=sql
+
+\@<!  逆序否定环视
+eg: 查找前面不是my的sql： /\(my\)\@<!sql
+
+\@>   固化分组
+
+\%(atom\)   (?: 非捕获型括号
+意思是，此分组不捕获，可以理解为不算在分组信息中
+eg： :%s/\%(my\)sql\(ok\)/\1
+上面的命令会将mysqlok替换为 ok ，由于my为捕获在分组中，故组中\1 为ok。
