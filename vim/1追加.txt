@@ -1,0 +1,11 @@
+1. 将该文件1,10行写入文件tmp.txt
+:1,10w!./tmp.txt
+
+2. 将该文件1,10行追加到文件tmp.txt
+:1,10w! >>./tmp.txt
+
+3. 将文件tmp.txt写入到下一行
+:r ./tmp.txt
+
+4. 将文件tmp.txt的1,10行写入到下一行
+:r !sed -n '1,2p' ./tmp.txt
