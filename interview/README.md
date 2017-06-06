@@ -59,3 +59,13 @@ console.log(c);
 ### 判断json的错误值
 
 ### 返回json的格式
+
+### 优先级
+```js
+var url = 'http://localhost:3000';
+var status = 'done'
+var ret = url || (status === 'done' ? 'http://localhost:3000/done' : 'http://localhost:3000/undo');
+//ret: http://localhost:3000
+var ret = url || status === 'done' ? 'http://localhost:3000/done' : 'http://localhost:3000/undo';
+//ret: http://localhost:3000/done
+```
