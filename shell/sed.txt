@@ -1,0 +1,6 @@
+1.在匹配行前插入或者后追加一行
+#行前加
+ sed -i '/allow chengyongxu.com/i\allow chengyongxu.cn' the.conf.file
+ #行前后
+ sed -i '/allow chengyongxu.com/a\allow chengyongxu.cn' the.conf.file
+
