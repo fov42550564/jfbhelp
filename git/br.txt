@@ -34,3 +34,9 @@ git checkout master //ÇÐ»»µ½master
 git merge test //½«test merge µ½ master
 git branch -d test //½«test É¾³ý
 
+1. ¿¿¿¿¿ git checkout -b v1.0.0
+2. ¿¿¿¿¿git push origin v1.0.0
+3. ¿¿¿¿¿¿¿ git checkout -b v1.0.0 origin/v1.0.0
+
+1. ¿¿tag¿git tag -d v1.0.0
+2. ¿¿¿¿¿git push origin :refs/tags/v1.0.0
