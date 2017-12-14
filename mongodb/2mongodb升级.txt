@@ -1,0 +1,14 @@
+1、更新软件
+
+brew upgrade        // 更新所有使用brew安装的软件
+brew upgrade git    // 更新某个使用brew安装的软件
+
+2、查看哪些软件需要更新
+brew outdated
+
+3、查找软件
+//当你记不清软件的名字的时候，你可以使用search，只需要写去几个字母，他就会帮你联想，并把所有可能的结果输出给你
+brew search
+
+4、查看使用brew安装的东西，安装在哪里
+brew --cache
