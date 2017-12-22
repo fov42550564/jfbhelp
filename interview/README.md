@@ -255,3 +255,114 @@ for (let n=0; n<=times; n++) {
 }
 console.log(4*sum/times);
 ```
+
+### 计算时间重叠部分
+
+```js
+var moment = require('moment');
+var _ = require('lodash');
+
+var now = moment('1月19日', 'MM月DD日');
+var invalidPeriodList = [
+    {start: '1月1日', end: '1月10日'},
+    {start: '1月3日', end: '1月13日'},
+    {start: '1月5日', end: '1月11日'},
+    {start: '1月7日', end: '1月14日'},
+    {start: '1月16日', end: '1月18日'},
+];
+invalidPeriodList = _.orderBy(_.reject(_.map(invalidPeriodList, o=>({start: moment(o.start, 'MM月DD日'), end: moment(o.end, 'MM月DD日').add(1, 'd')})), o=>o.start>=now), 'end', 'desc');
+// console.log(invalidPeriodList);
+
+for (let i=0,len=invalidPeriodList.length; i<len-1; i++) {
+    const pre = invalidPeriodList[i];
+    const post = invalidPeriodList[i+1];
+    if (pre.start <= post.end) { //需要合并
+        invalidPeriodList[i+1] = { start: pre.start < post.start ? pre.start : post.start, end: pre.end };
+        invalidPeriodList[i] = null;
+    }
+}
+invalidPeriodList = _.reject(invalidPeriodList, o=>!o);
+// console.log(invalidPeriodList);
+```
+
+### 去除特殊时间
+
+```js
+var moment = require('moment');
+var _ = require('lodash');
+
+var now = moment('1月14日', 'MM月DD日');
+var invalidPeriodList = [{start: '1月5日', end: '1月6日'}, {start: '1月1日', end: '1月3日'}, {start: '1月9日', end: '1月11日'}];
+invalidPeriodList = _.orderBy(_.reject(_.map(invalidPeriodList, o=>({start: moment(o.start, 'MM月DD日'), end: moment(o.end, 'MM月DD日').add(1, 'd')})), o=>o.start>=now), 'start', 'desc');
+console.log(invalidPeriodList);
+
+var n = 1;
+for (let i in invalidPeriodList) {
+    const o = invalidPeriodList[i];
+    if (now.diff(o.end, 'd') >= n) {
+        break;
+    }
+    n += (o.end > now ? now : o.end).diff(o.start, 'd');
+}
+
+console.log("======", n, now.subtract(n, 'd'));
+
+```
+
+### 去除特殊时间2
+```js
+var moment = require('moment');
+var _ = require('lodash');
+
+var now = moment('1月20日', 'MM月DD日');
+var invalidPeriodList = [
+    { start: '12月10日', end: '1月10日' },
+    { start: '1月3日', end: '1月13日' },
+    { start: '1月5日', end: '1月11日' },
+    { start: '1月7日', end: '1月14日' },
+    { start: '1月16日', end: '1月18日' },
+];
+invalidPeriodList = _.map(invalidPeriodList, o => ({ start: moment(o.start, 'MM月DD日').add(1, 'd'), end: moment(o.end, 'MM月DD日').add(1, 'd') }));
+
+const isInvalid = (date) => _.find(invalidPeriodList, o => {
+    if (o.start > o.end) {
+        const start = o.start.clone().subtract(1, 'y');
+        const end = o.end.clone().add(1, 'y');
+        return (date >= start.valueOf() && date <= o.end.valueOf()) || (date >= o.start.valueOf() && date <= end.valueOf());
+    }
+    return date >= o.start.valueOf() && date <= o.end.valueOf();
+});
+
+var n = 5;
+var start, end = now;
+var includeToday = true;
+var i = 0;
+const list = [];
+while (true) {
+    if (isInvalid(end.valueOf())) {
+        end.subtract(1, 'd');
+    } else {
+        if (!start) {
+            start = end.clone().subtract(1, 'd');
+        } else {
+            start.subtract(1, 'd');
+        }
+        if (isInvalid(start.valueOf())) {
+            if (includeToday && i === 0) {
+                list.push({ $gte: start.toDate() });
+            } else {
+                list.push({ $gte: start.toDate(), $lt: end.toDate() });
+            }
+            end = start.clone().subtract(1, 'd');
+            start = null;
+        }
+        i++;
+        if (i === n) {
+            list.push({ $gte: start.toDate(), $lt: end.toDate() });
+            break;
+        }
+    }
+}
+
+console.log({ $and: list });
+```
