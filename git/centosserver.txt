@@ -1,0 +1,20 @@
+1. adduser git # 添加git用户
+2. passwd git # 为git用户设置密码
+3. su - git # 切换到git用户
+4. 在根目录 /root/git(git用户的~)目录： git init --bare sample.git # 创建空仓库
+5. 客户端 git remote remove origin # 删除原来的 remote
+6. git remote add origin git@192.168.1.189:pdshopserver.git # 添加新的remote
+7. git pu # 上传代码
+
+免密登录：
+1. 在git用户下 mkdir ~/.ssh/
+2. chmod 700 /home/git/.ssh
+3. chmod 644 /home/git/.ssh/authorized_keys
+4.在客户端执行 ssh-keygen -t rsa -C fov42550564 # 一路按anter
+5.会生成 id_rsa 和 id_rsa.pub
+6.拷贝 id_rsa.pub 的内容添加到 /home/git/.ssh/authorized_keys 即可
+
+从码云迁移
+1. git clone --mirror https://gitee.com/simiantong/test.git
+2. 在客户端git clone  git@192.168.1.189:test.git
+3. git push --mirror https://gitee.com/simiantong/test.git

@@ -1,44 +1,41 @@
 1.sudo apt-get install git
 2.sudo adduser git
 3.sudo git init --bare sample.git
-4.sudo chown -R git:git sample.git ĞŞ¸ÄËùÓĞÕß
-5./home/git/.ssh/authorized_keys Èç¹ûÃ»ÓĞÕâ¸öÎÄ¼ş£¬¾Í´´½¨
-6.ÔÚ¿Í»§¶Ëssh-keygen Éú³Éssh key
-7.½«~/.ssh/id_rsa.pub¸´ÖÆµ½/home/git/.ssh/authorized_keys Ò»ĞĞÒ»¸ö
-8.Ê¹ÓÃgit clone git@myhost:project1.gitÏÂÔØ´úÂë
-9.Ê¹ÓÃgit pull git push½»»»´úÂë
+4.sudo chown -R git:git sample.git ä¿®æ”¹æ‰€æœ‰è€…
+5./home/git/.ssh/authorized_keys å¦‚æœæ²¡æœ‰è¿™ä¸ªæ–‡ä»¶ï¼Œå°±åˆ›å»º
+6.åœ¨å®¢æˆ·ç«¯ssh-keygen ç”Ÿæˆssh key
+7.å°†~/.ssh/id_rsa.pubå¤åˆ¶åˆ°/home/git/.ssh/authorized_keys ä¸€è¡Œä¸€ä¸ª
+8.ä½¿ç”¨git clone git@myhost:project1.gitä¸‹è½½ä»£ç 
+9.ä½¿ç”¨git pull git pushäº¤æ¢ä»£ç 
 
 
-Ìí¼Óµ½Ô¶³Ì·ÖÖ§
+æ·»åŠ åˆ°è¿œç¨‹åˆ†æ”¯
 git remote add origin git@github.com:fov42550564/node-qiubai.git
 
-ÍÆËÍµ½Ô¶³Ì(git push [Ô¶³ÌÃû] [±¾µØ·ÖÖ§]:[Ô¶³Ì·ÖÖ§])
+æ¨é€åˆ°è¿œç¨‹(git push [è¿œç¨‹å] [æœ¬åœ°åˆ†æ”¯]:[è¿œç¨‹åˆ†æ”¯])
 git push -u origin master
 
-²é¿´Ô¶³Ì·ÖÖ§
+æŸ¥çœ‹è¿œç¨‹åˆ†æ”¯
 git branch -r
 
-²é¿´Ô¶³Ì²Ö¿â
+æŸ¥çœ‹è¿œç¨‹ä»“åº“
 git remote -v
 
-git remote show origin ÏÔÊ¾Ô¶³Ì¿âoriginÀïµÄ×ÊÔ´
-git remote show ²é¿´Ô¶³Ì¿â
-git clone git://github.com/schacon/grit.git ´Ó·şÎñÆ÷ÉÏ½«´úÂë¸øÀ­ÏÂÀ´
-git fetch Ïàµ±ÓÚÊÇ´ÓÔ¶³Ì»ñÈ¡×îĞÂ°æ±¾µ½±¾µØ£¬²»»á×Ô¶¯merge
+git remote show origin æ˜¾ç¤ºè¿œç¨‹åº“originé‡Œçš„èµ„æº
+git remote show æŸ¥çœ‹è¿œç¨‹åº“
+git clone git://github.com/schacon/grit.git ä»æœåŠ¡å™¨ä¸Šå°†ä»£ç ç»™æ‹‰ä¸‹æ¥
+git fetch ç›¸å½“äºæ˜¯ä»è¿œç¨‹è·å–æœ€æ–°ç‰ˆæœ¬åˆ°æœ¬åœ°ï¼Œä¸ä¼šè‡ªåŠ¨merge
 
-Èç¹ûpush²»³É¹¦Ã»ÓĞÈ¨ÏŞ
+å¦‚æœpushä¸æˆåŠŸæ²¡æœ‰æƒé™
 chown -R git:git puzzle.git
-±ØĞë´´½¨·ÖÖ§²ÅÄÜpush
+å¿…é¡»åˆ›å»ºåˆ†æ”¯æ‰èƒ½push
 
-git²»ÔÊĞíÓÃpush²Ù×÷¸üĞÂnon-bareµÄ²Ö¿â£¬ÒòÎªÕâÑùµÄ²Ù×÷»áµ¼ÖÂremote²Ö¿âµÄË÷Òı £¨index£©ºÍ¹¤×÷Ê÷£¨work tree£©ÓëÄãpushµÄ²»Ò»ÖÂ£¬´ËÊ±ĞèÒªÍ¨¹ı¡®git reset ????ard¡¯²Ù×÷À´Ê¹µÃ¹¤×÷Ê÷ÓëHEADË÷ÒıÏàÆ¥Åä¡£ ¿ÉÒÔÍ¨¹ıÔÚremote¶Ë£¬ÉèÖÃgitµÄÅäÖÃÎÄ¼ş£¨.git/config£©£¬ÔÚÆäÖĞÌí¼ÓÈçÏÂÄÚÈİ£º 
+gitä¸å…è®¸ç”¨pushæ“ä½œæ›´æ–°non-bareçš„ä»“åº“ï¼Œå› ä¸ºè¿™æ ·çš„æ“ä½œä¼šå¯¼è‡´remoteä»“åº“çš„ç´¢å¼• ï¼ˆindexï¼‰å’Œå·¥ä½œæ ‘ï¼ˆwork treeï¼‰ä¸ä½ pushçš„ä¸ä¸€è‡´ï¼Œæ­¤æ—¶éœ€è¦é€šè¿‡â€˜git reset ????ardâ€™æ“ä½œæ¥ä½¿å¾—å·¥ä½œæ ‘ä¸HEADç´¢å¼•ç›¸åŒ¹é…ã€‚ å¯ä»¥é€šè¿‡åœ¨remoteç«¯ï¼Œè®¾ç½®gitçš„é…ç½®æ–‡ä»¶ï¼ˆ.git/configï¼‰ï¼Œåœ¨å…¶ä¸­æ·»åŠ å¦‚ä¸‹å†…å®¹ï¼š
 [receive]
 denyCurrentBranch = false
-»òÕßÊ¹ÓÃÈçÏÂÃüÁî
-$ git config receive.denyCurrentBranch ignore  # git config Ïàµ±ÓÚ git config --local, localÎªÄ¬ÈÏÖµ
-ÕâÑù¾Í¿ÉÒÔÍ¨¹ıgit pushÌá½»×Ô¼ºµÄÎÈ¶¨¸üĞÂ£¬ÒªÏëÔÚpushºóÔÚremote¶Ë¿´µ½¸üĞÂµÄĞ§¹û£¬Ö´ĞĞgit reset ????ard¼´¿É¡£
+æˆ–è€…ä½¿ç”¨å¦‚ä¸‹å‘½ä»¤
+$ git config receive.denyCurrentBranch ignore  # git config ç›¸å½“äº git config --local, localä¸ºé»˜è®¤å€¼
+è¿™æ ·å°±å¯ä»¥é€šè¿‡git pushæäº¤è‡ªå·±çš„ç¨³å®šæ›´æ–°ï¼Œè¦æƒ³åœ¨pushååœ¨remoteç«¯çœ‹åˆ°æ›´æ–°çš„æ•ˆæœï¼Œæ‰§è¡Œgit reset ????ardå³å¯ã€‚
 
-ĞŞ¸ÄÔ¶³Ìurl
+ä¿®æ”¹è¿œç¨‹url
 git remote set-url origin apple@192.168.211.101:~/baiduyun/git/client.git
-
-
-
