@@ -21,6 +21,28 @@ _.countBy(_.map(new Array(30), (m,i)=>!((i+1)%3)).map((m,i)=>(!((i+1)%5))^m),(i)
 ```js
 var leap = (!(y%4)&(!!(y%100)))|(!(y%400));
 ```
+### 深拷贝一个Object，去除_id,\__v字段
+```js
+function cloneDeep(doc) {
+    if (typeof doc !== 'object') {
+        return doc;
+    }
+    if (doc instanceof Array) {
+        return doc.map(o=>cloneDeep(o));
+    }
+    const keys = Object.keys(doc);
+    if (!keys.length) {
+        return doc;
+    }
+    const obj = {};
+    for (let key of keys) {
+        if (key !== '_id' && key !== '__v') {
+            obj[key] = cloneDeep(doc[key]);
+        }
+    }
+    return obj;
+}
+```
 
 ### 编写冒泡排序的算法
 
