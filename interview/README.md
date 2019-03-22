@@ -126,6 +126,30 @@ list.unshift(1);
 console.log(list);
 ```
 
+### 哥德巴赫猜想
+``` js
+const _ = require('lodash');
+const n = 10000;
+const list = [];
+for (let i=2; i<=n; i++) {
+    _.every(list, o=>i%o) && list.push(i);
+}
+for (let i=4; i<=n; i+=2) {
+    let found = false;
+    outer: for (const v1 of list) {
+        for (const v2 of list) {
+            if (v1+v2===i) {
+                found = true;
+                break outer;
+            }
+        }
+    }
+    if (!found) {
+        console.log(`${i}不能描述成为两个素数的之和`);
+    }
+}
+```
+
 ### 计算二进制
 ```js
 const result = [];
