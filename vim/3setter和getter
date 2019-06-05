@@ -1,0 +1,4 @@
+%s/private\s\+\(\w\+\)\s\+\(\w\+\)\([^;]*\);.*/private \1 \2\3;public \1 get\2(){return this.\2;}public void set\2(\1 \2){this.\2 = \2;}/
+
+
+%s/private\s\+\(\w\+\)\s\+\(\w\+\)\([^;]*\);.*/\="private ".submatch(1)." "submatch(2)submatch(3).";public ".submatch(1)." get".toupper(strpart(submatch(2), 0, 1)).strpart(submatch(2), 1)."(){return this.".submatch(2).";}public void set".toupper(strpart(submatch(2), 0, 1)).strpart(submatch(2), 1)."(".submatch(1)." ".submatch(2)."){this.".submatch(1)." = "submatch(1).";}"/
