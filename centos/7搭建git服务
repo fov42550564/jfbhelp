@@ -20,3 +20,13 @@
 1. git clone --mirror https://gitee.com/simiantong/test.git
 2. 在客户端git clone  git@192.168.1.189:test.git
 3. git push --mirror https://gitee.com/simiantong/test.git
+
+
+禁用shell登录
+　　如果希望git用户不能登录shell，就要修改git用户的权限
+　　修改/etc/passwd
+vim /etc/passwd
+　　将
+git:x:1000:1000::/home/git:/bin/bash
+　　改为
+git:x:1000:1000::/home/git:/bin/git-shell
