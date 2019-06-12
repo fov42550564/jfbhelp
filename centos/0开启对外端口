@@ -1,0 +1,35 @@
+#centos查询端口是不是开放的
+firewall-cmd --permanent --query-port=8080/tcp
+
+
+#添加对外开放端口
+firewall-cmd --permanent --add-port=8080/tcp
+
+#删除对外开放端口
+firewall-cmd --permanent --remove-port=8080/tcp
+
+#重启防火墙
+firewall-cmd --reload
+
+#查看list
+firewall-cmd --list-all
+
+#查看iptables
+iptables -L -n
+
+#关闭防火墙(不然mongodb不能外部访问)
+systemctl stop firewalld
+
+
+解决不能访问mysql的问题
+> use mysql;
+> update user set host = '%' where user = 'root';
+> flush privileges;
+
+
+# iptables
+
+yum install iptables-services
+> iptables -A INPUT 1 -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT
+> service iptables save
+> systemctl start iptables.service

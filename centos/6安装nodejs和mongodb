@@ -1,0 +1,13 @@
+安装nodejs
+
+到官网 https://nodejs.org/en/download/ 下载Linux Binaries (x64)
+然后上传到服务器
+xz -d node-v10.16.0-linux-x64.tar.xz
+tar -xvf node-v10.16.0-linux-x64.tar
+mv node-v10.16.0-linux-x64.tar node
+
+
+安装mongodb
+到官网 https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-rhel70-4.0.10.tgz 下载
+tar -xvf mongodb-linux-x86_64-rhel70-4.0.10.tgz
+mv mongodb-linux-x86_64-rhel70-3.2.4 mongodb

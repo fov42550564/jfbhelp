@@ -1,0 +1,5 @@
+1. mongodb 从 3.6 升级到 4.0.1
+a. 先开启3.6版本的服务，进入mongo，执行db.adminCommand( { getParameter: 1, featureCompatibilityVersion: 1 } )
+b. 查看是不是3.6，如果不是：执行 db.adminCommand( { setFeatureCompatibilityVersion: "3.6" } ) )
+c. 执行 db.adminCommand( "shutdown" ) 关闭服务
+d. 切换到4.0.1版本，开启服务

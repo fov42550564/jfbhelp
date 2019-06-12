@@ -1,0 +1,36 @@
+安装
+1、wget http://repo.mysql.com/mysql57-community-release-el7-10.noarch.rpm
+2、rpm -Uvh mysql57-community-release-el7-10.noarch.rpm
+3、yum install  -y  mysql-community-server
+
+如何启动/停止/重启MySQL
+　　一、启动方式
+　　1、使用 service 启动：service mysqld start
+　　2、使用 mysqld 脚本启动：/etc/inint.d/mysqld start
+　　3、使用 safe_mysqld 启动：safe_mysqld&
+　　二、停止
+　　1、使用 service 启动：service mysqld stop
+　　2、使用 mysqld 脚本启动：/etc/inint.d/mysqld stop
+　　3、mysqladmin shutdown
+　　三、重启
+　　1、使用 service 启动：service mysqld restart
+　　2、使用 mysqld 脚本启动：/etc/inint.d/mysqld restart
+   四、查看状态
+   1、 systemctl status mysqld.service
+
+获取初始密码
+grep 'temporary password' /var/log/mysqld.log
+mysql -uroot -p xx # 使用初始密码登录
+
+修改密码
+ALTER USER 'root'@'localhost' IDENTIFIED BY '123456';
+
+如果出现错误：Your password does not satisfy the current policy requirements
+
+set global validate_password_policy=0;
+set global validate_password_length=1;
+ALTER USER 'root'@'localhost' IDENTIFIED BY '123456';
+
+查看字符集
+
+show variables like 'character%';

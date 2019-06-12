@@ -1,0 +1,8 @@
+添加服务
+chkconfig --add /etc/init.d/pdshop_start
+
+查看开机启动的列表
+chkconfig --list
+
+设置终端模式开机启动：
+chkconfig pdshop_start on
