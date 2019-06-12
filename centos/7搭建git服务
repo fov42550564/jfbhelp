@@ -9,10 +9,12 @@
 免密登录：
 1. 在git用户下 mkdir ~/.ssh/
 2. chmod 700 /home/git/.ssh
-3. chmod 644 /home/git/.ssh/authorized_keys
-4.在客户端执行 ssh-keygen -t rsa -C fov42550564 # 一路按anter
-5.会生成 id_rsa 和 id_rsa.pub
-6.拷贝 id_rsa.pub 的内容添加到 /home/git/.ssh/authorized_keys 即可
+3. touch /home/git/.ssh/authorized_keys; chmod 644 /home/git/.ssh/authorized_keys
+4. cd /home; chown -R git:git git
+5. 在客户端执行 ssh-keygen -t rsa -C fov42550564 # 一路按anter
+6. 会生成 id_rsa 和 id_rsa.pub
+7. 拷贝 id_rsa.pub 的内容添加到 /home/git/.ssh/authorized_keys 即可
+8. vim /etc/ssh/sshd_config;RSAAuthentication yes|PubkeyAuthentication yes|AuthorizedKeysFile .ssh/authorized_keys
 
 从码云迁移
 1. git clone --mirror https://gitee.com/simiantong/test.git
