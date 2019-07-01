@@ -1,0 +1,303 @@
+#!/bin/bash
+
+source ~/command/common
+
+_mainServer=SPServer
+_remote_root=/root/whxx
+_remote_download_dir=$_remote_root/${_mainServer}/download/apps
+_type="version"
+_suffix="_default"
+_name=""
+_ip="192.168.0.249"
+_password="123"
+
+function xissue_version()
+{
+	expect -c "
+	set timeout 30000;
+	spawn scp -r "projects/${_name}/version.json" "root@${_ip}:${_remote_download_dir}/${_name}/version.json"
+	expect {
+		\"*_password:\" {send \"${_password}\r\"}
+	}
+	interact
+	"
+}
+function xissue_ios()
+{
+	mkdir -p ${_name}
+	cp projects/${_name}/ios_md5.json ${_name}/ios_md5.json
+	cp projects/${_name}/version.json ${_name}/version.json
+	pushd ${_name}
+	tar zcvf ${_name}.tar.gz *
+	expect -c "
+	set timeout 30000;
+	spawn scp -r "${_name}.tar.gz" "root@${_ip}:${_remote_download_dir}/${_name}/${_name}.tar.gz"
+	expect {
+		\"*_password:\" {send \"${_password}\r\"}
+	}
+	interact
+	"
+	popd
+	rm -fr ${_name}
+	expect -c "
+	set timeout 30000;
+	spawn ssh root@${_ip};
+	expect {
+		\"*_password:\" {send \"${_password}\r\"; exp_continue}
+		\"*#\" {send \" cd  ${_remote_download_dir}/${_name}/\rtar zxf ${_name}.tar.gz\rrm -f ${_name}.tar.gz\rexit\r\"}
+	}
+	interact
+	"
+}
+function xissue_android()
+{
+	mkdir -p ${_name}
+	cp projects/${_name}/${_name}${_suffix}.apk ${_name}/${_name}.apk
+	cp projects/${_name}/android_md5.json ${_name}/android_md5.json
+	cp projects/${_name}/version.json ${_name}/version.json
+	pushd ${_name}
+	tar zcvf ${_name}.tar.gz *
+	expect -c "
+	set timeout 30000;
+	spawn scp -r "${_name}.tar.gz" "root@${_ip}:${_remote_download_dir}/${_name}/${_name}.tar.gz"
+	expect {
+		\"*_password:\" {send \"${_password}\r\"}
+	}
+	interact
+	"
+	popd
+	rm -fr ${_name}
+	expect -c "
+	set timeout 30000;
+	spawn ssh root@${_ip};
+	expect {
+		\"*_password:\" {send \"${_password}\r\"; exp_continue}
+		\"*#\" {send \" cd  ${_remote_download_dir}/${_name}/\rtar zxf ${_name}.tar.gz\rrm -f ${_name}.tar.gz\rexit\r\"}
+	}
+	interact
+	"
+}
+function xissue_jsandroid()
+{
+	mkdir -p ${_name}
+	cp projects/${_name}/jsandroid.zip ${_name}/jsandroid.zip
+	cp projects/${_name}/jsandroid_all.zip ${_name}/jsandroid_all.zip
+	cp projects/${_name}/android_md5.json ${_name}/android_md5.json
+	cp projects/${_name}/version.json ${_name}/version.json
+	pushd ${_name}
+	tar zcvf ${_name}.tar.gz *
+	expect -c "
+	set timeout 30000;
+	spawn scp -r "${_name}.tar.gz" "root@${_ip}:${_remote_download_dir}/${_name}/${_name}.tar.gz"
+	expect {
+		\"*_password:\" {send \"${_password}\r\"}
+	}
+	interact
+	"
+	popd
+	rm -fr ${_name}
+	expect -c "
+	set timeout 30000;
+	spawn ssh root@${_ip};
+	expect {
+		\"*_password:\" {send \"${_password}\r\"; exp_continue}
+		\"*#\" {send \" cd  ${_remote_download_dir}/${_name}/\rtar zxf ${_name}.tar.gz\rrm -f ${_name}.tar.gz\rexit\r\"}
+	}
+	interact
+	"
+}
+function xissue_jsios()
+{
+	mkdir -p ${_name}
+	cp projects/${_name}/jsios.zip ${_name}/jsios.zip
+	cp projects/${_name}/jsios_all.zip ${_name}/jsios_all.zip
+	cp projects/${_name}/ios_md5.json ${_name}/ios_md5.json
+	cp projects/${_name}/version.json ${_name}/version.json
+	pushd ${_name}
+	tar zcvf ${_name}.tar.gz *
+	expect -c "
+	set timeout 30000;
+	spawn scp -r "${_name}.tar.gz" "root@${_ip}:${_remote_download_dir}/${_name}/${_name}.tar.gz"
+	expect {
+		\"*_password:\" {send \"${_password}\r\"}
+	}
+	interact
+	"
+	popd
+	rm -fr ${_name}
+	expect -c "
+	set timeout 30000;
+	spawn ssh root@${_ip};
+	expect {
+		\"*_password:\" {send \"${_password}\r\"; exp_continue}
+		\"*#\" {send \" cd  ${_remote_download_dir}/${_name}/\rtar zxf ${_name}.tar.gz\rrm -f ${_name}.tar.gz\rexit\r\"}
+	}
+	interact
+	"
+}
+function xissue_js()
+{
+	mkdir -p ${_name}
+	cp projects/${_name}/jsandroid.zip ${_name}/jsandroid.zip
+	cp projects/${_name}/jsandroid_all.zip ${_name}/jsandroid_all.zip
+	cp projects/${_name}/android_md5.json ${_name}/android_md5.json
+	cp projects/${_name}/version.json ${_name}/version.json
+	cp projects/${_name}/jsios.zip ${_name}/jsios.zip
+	cp projects/${_name}/jsios_all.zip ${_name}/jsios_all.zip
+	cp projects/${_name}/ios_md5.json ${_name}/ios_md5.json
+	cp projects/${_name}/version.json ${_name}/version.json
+	pushd ${_name}
+	tar zcvf ${_name}.tar.gz *
+	expect -c "
+	set timeout 30000;
+	spawn scp -r "${_name}.tar.gz" "root@${_ip}:${_remote_download_dir}/${_name}/${_name}.tar.gz"
+	expect {
+		\"*_password:\" {send \"${_password}\r\"}
+	}
+	interact
+	"
+	popd
+	rm -fr ${_name}
+	expect -c "
+	set timeout 30000;
+	spawn ssh root@${_ip};
+	expect {
+		\"*_password:\" {send \"${_password}\r\"; exp_continue}
+		\"*#\" {send \" cd  ${_remote_download_dir}/${_name}/\rtar zxf ${_name}.tar.gz\rrm -f ${_name}.tar.gz\rexit\r\"}
+	}
+	interact
+	"
+}
+function xissue_java_server()
+{
+	expect -c "
+	set timeout 30000;
+	spawn scp -r "projects/${_name}/server.war" "root@${_ip}:${_remote_root}/${_name}/server.war"
+	expect {
+		\"*_password:\" {send \"${_password}\r\"}
+	}
+	interact
+	"
+	expect -c "
+	set timeout 30000;
+	spawn ssh root@${_ip};
+	expect {
+		\"*_password:\" {send \"${_password}\r\"; exp_continue}
+		\"*#\" {send \" cd  ${_remote_root}/${_name}\rservice ${_name} restart\rexit\r\"}
+	}
+	interact
+	"
+	expect -c "
+	set timeout 30000;
+	spawn scp -r "projects/${_name}/version.json" "root@${_ip}:${_remote_download_dir}/${_name}/version.json"
+	expect {
+		\"*_password:\" {send \"${_password}\r\"}
+	}
+	interact
+	"
+}
+function xissue_server()
+{
+	expect -c "
+	set timeout 30000;
+	spawn scp -r "projects/${_name}/app.tar.gz" "root@${_ip}:${_remote_root}/${_name}/app.tar.gz"
+	expect {
+		\"*_password:\" {send \"${_password}\r\"}
+	}
+	interact
+	"
+	expect -c "
+	set timeout 30000;
+	spawn ssh root@${_ip};
+	expect {
+		\"*_password:\" {send \"${_password}\r\"; exp_continue}
+		\"*#\" {send \" cd  ${_remote_root}/${_name}\rtar zxf app.tar.gz\rrm -f app.tar.gz\rpm2 restart ${_name} --update-env\rexit\r\"}
+	}
+	interact
+	"
+	expect -c "
+	set timeout 30000;
+	spawn scp -r "projects/${_name}/version.json" "root@${_ip}:${_remote_root}/${_mainServer}/download/apps/${_name}/version.json"
+	expect {
+		\"*_password:\" {send \"${_password}\r\"}
+	}
+	interact
+	"
+}
+function xissue_web()
+{
+	expect -c "
+	set timeout 30000;
+	spawn scp -r "projects/${_name}/app.tar.gz" "root@${_ip}:${_remote_root}/${_name}/app.tar.gz"
+	expect {
+		\"*_password:\" {send \"${_password}\r\"}
+	}
+	interact
+	"
+	expect -c "
+	set timeout 30000;
+	spawn ssh root@${_ip};
+	expect {
+		\"*_password:\" {send \"${_password}\r\"; exp_continue}
+		\"*#\" {send \" cd  ${_remote_root}/${_name}\rrm -fr public\rtar zxf app.tar.gz\rrm -f app.tar.gz\rpm2 restart ${_name} --update-env\rexit\r\"}
+	}
+	interact
+	"
+	expect -c "
+	set timeout 30000;
+	spawn scp -r "projects/${_name}/version.json" "root@${_ip}:${_remote_root}/${_mainServer}/download/apps/${_name}/version.json"
+	expect {
+		\"*_password:\" {send \"${_password}\r\"}
+	}
+	interact
+	"
+}
+function show_help()
+{
+	local -a list
+	list="xissue"
+	list=("${list[@]}" "Usage: xissue [-t|-n|-h]")
+	list=("${list[@]}" "xissue -n [name]: SPPolice|SPImage|SPPolice_PC|SPServer")
+	list=("${list[@]}" "xissue -t [type]: android/ios/jsandroid/jsios/js [default: version](only for SPPolice)")
+	list=("${list[@]}" "xissue -s [suffix]: input the suffix name of install file (only for release big version of android )[default: _default]")
+	list=("${list[@]}" "xissue -h: show help")
+	__msgbox "${list[@]}"
+}
+function xissue_mobile() {
+	case ${_type} in
+		version) xissue_version;;
+		android) xissue_android;;
+		ios) xissue_ios;;
+		jsandroid) xissue_jsandroid;;
+		jsios) xissue_jsios;;
+		js) xissue_js;;
+	esac
+}
+function xissue_project()
+{
+	case ${_name} in
+		SPServer)xissue_java_server;;
+		SPImage)xissue_server;;
+		SPPolice_PC)xissue_web;;
+		SPPolice)xissue_mobile;;
+	esac
+}
+function main()
+{
+	local has_oper
+	has_oper=0
+	while getopts :n:t:s:h opt;do
+		has_oper=1
+		case ${opt} in
+			n)_name="$OPTARG";;
+			t)_type="$OPTARG";;
+			s)_suffix="$OPTARG";;
+			*)show_help;exit;;
+		esac
+	done
+	[ $has_oper -eq 0 -o "$_name" = "" ] && show_help && exit
+
+	xissue_project
+}
+
+main "$@"

@@ -1,0 +1,97 @@
+#!/bin/bash
+
+source ~/command/common
+
+declare -a _projects
+declare -a _files
+function getSubmitComments() {
+	node -e " \
+	function getItem(project, type) { \
+	    const v = JSON.parse(require('fs').readFileSync('projects/'+project+'/version.json')); \
+	    let info = project+':'; \
+		if (v.androidVersion) { \
+		    if (type & 1) { \
+		        info = info+' android V'+v.androidVersion+'.'+v.androidJsVersionCode; \
+		    } \
+		    if (type & 2) { \
+		        info = info+' ios V'+v.iosVersion+'.'+v.iosJsVersionCode; \
+		    } \
+		} else { \
+			info = info+' V'+v.versionName; \
+		} \
+	    return info+';'; \
+	} \
+	var info = getItem('$1', $2); \
+	console.log(info); \
+	"
+}
+function getProjects() {
+	_projects=($(git status|grep "modified:"|grep "version.json"|grep "$1"|sed 's/.*projects\/\(.*\)\/.*/\1/'))
+}
+function getSubmitFiles () {
+	_files=($(git status|grep "modified:"|grep "$1"|sed 's/.*modified://'))
+}
+function show_help()
+{
+	local -a list
+	list="help"
+	list=("${list[@]}" "Usage :xsubmit [OPTIONS]")
+	list=("${list[@]}" "  -p [projects]: if not set willbe all project")
+	list=("${list[@]}" "  -t [targets]: android|ios|all")
+	list=("${list[@]}" "  -v: show version")
+	list=("${list[@]}" "  -h: show help ")
+	list=("${list[@]}" " ")
+	list=("${list[@]}" "xsubmit")
+	list=("${list[@]}" "xsubmit -f \"PDClient PDShop\"")
+	__msgbox "${list[@]}"
+}
+function main()
+{
+	local oper_right oper android ios all filter _filter targets
+	oper_right=0
+	oper=0
+	android=1
+	ios=2
+	all=3
+
+	while getopts :p:t:vh opt;do
+		oper_right=1
+		case $opt in
+			p)_filter=($OPTARG);;
+			t)targets=$(($OPTARG));;
+			v)oper=1;;
+			*)show_help;exit;;
+		esac
+	done
+
+	if ! [ "$_filter" = "" ];then
+		filter=${_filter[0]}
+		for f in ${_filter[@]:1};do
+			filter="${filter}\|${f}"
+		done
+	fi
+
+	if [ "$targets" = "" ];then
+		echo "error: must select targets"
+		exit
+	fi
+
+	getProjects "${filter}"
+	if [ "$oper" = "1" ];then
+		for project in ${_projects[@]};do
+			getSubmitComments $project ${targets}
+		done
+	else
+		info=''
+		for project in ${_projects[@]};do
+			info="$info `getSubmitComments $project ${targets}`"
+		done
+		getSubmitFiles "${filter}"
+		git pl
+		[[ $? -ne 0 ]] && exit
+		__ask "是否立即按照日志: $info 提交这些工程:${_projects[@]} 的这些文件:${_files[@]}  "
+		[[ $? -eq 0 ]] && git commit -m "发布：$info" ${_files[@]} && git pu && git lg -1
+	fi
+}
+
+main "$@"

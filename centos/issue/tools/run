@@ -1,0 +1,124 @@
+#!/bin/bash
+
+function doCommand() {
+    if [ "$1" = "start" ];then
+        pushd $2
+        pm2 start "app.js" --name "$2"
+        popd
+    elif [ "$1" = "restart" ];then
+        pm2 restart "$2" --update-env
+    elif [ "$1" = "stop" ];then
+        pm2 stop "$2"
+    elif [ "$1" = "delete" ];then
+        pm2 delete "$2"
+    elif [ "$1" = "status" ];then
+        pm2 list "$2"
+    fi
+}
+
+function doCommandForJava() {
+    if [ "$1" = "start" ];then
+        count=`ps -ef |grep java|grep $3|wc -l`
+        if [ $count != 0 ];then
+            echo "$2/$3 is running"
+        else
+            prefix=$(date '+%Y-%m-%d-%H-%M-%S')
+            pushd $2
+            echo "$2/$3 is starting..."
+            echo "nohup java -jar $3 start > log/${prefix}.log &"
+            nohup java -jar $3 start > log/${prefix}.log 2>&1 &
+            popd
+        fi
+    elif [ "$1" = "restart" ];then
+        doCommandForJava stop $2 $3
+        sleep 3
+        doCommandForJava start $2 $3
+    elif [ "$1" = "stop" ];then
+        appId=`ps -ef |grep java|grep $3|awk '{print $2}'`
+        if [ -z $appId ];then
+            echo "$2/$3 is not running"
+        else
+            echo "$2/$3 is stopping..."
+            kill $appId
+        fi
+    elif [ "$1" = "delete" ];then
+        doCommandForJava stop $2 $3
+    elif [ "$1" = "status" ];then
+        appId=`ps -ef |grep java|grep $3|awk '{print $2}'`
+        if [ -z $appId ];then
+            echo "$2/$3 is not running"
+        else
+            ps -ef |grep java|grep $3|
+        fi
+    fi
+}
+
+function doCommandForNginx() {
+    if [ "$1" = "start" ];then
+        mkdir -p nginx/logs
+        nginx -p nginx -c config/nginx.conf
+        echo nginx -p nginx -c config/nginx.conf
+    elif [ "$1" = "restart" ];then
+        nginx -p nginx -c config/nginx.conf -s reload
+        echo nginx -p nginx -c config/nginx.conf -s reload
+    elif [ "$1" = "stop" ];then
+        nginx -p nginx -c config/nginx.conf -s stop
+        echo nginx -p nginx -c config/nginx.conf -s stop
+    elif [ "$1" = "delete" ];then
+        nginx -p nginx -c config/nginx.conf -s quit
+        echo nginx -p nginx -c config/nginx.conf -s quit
+    elif [ "$1" = "status" ];then
+        ps -ef | grep nginx
+    fi
+}
+
+function show_help()
+{
+    echo "run -c[command] -t[targets]"
+    echo ""
+    echo "  -c [command]:command as follows:"
+    echo "      start restart stop delete status"
+    echo ""
+    echo "  -t [targets]:targets as follows:"
+    echo "      p, i, s, n [ p: SPPolice_PC, i: SPImage, s: SPServer, n: nginx]"
+    echo "      uses: -t p+i"
+    echo "      uses: -t all"
+    echo ""
+}
+
+function main()
+{
+    local has_oper a o c s all targets command
+    has_oper=0; p=1; i=2; s=4; n=8; all=15;
+    while getopts :t:c: opt;do
+        has_oper=1
+        case $opt in
+            t)targets=$(($OPTARG));;
+            c)command=$OPTARG;;
+            *)show_help;exit;;
+        esac
+    done
+    [ $has_oper -eq 0 ] && show_help && exit
+
+    if (($targets&p));then
+        doCommand $command SPPolice_PC
+    fi
+
+    if (($targets&i));then
+        doCommand $command SPImage
+    fi
+
+    if (($targets&s));then
+        mkdir -p SPServer/download/apps/SPServer
+        mkdir -p SPServer/download/apps/SPImage
+        mkdir -p SPServer/download/apps/SPPolice_PC
+        mkdir -p SPServer/download/apps/PDPolice
+        doCommandForJava $command SPServer server.war
+    fi
+
+    if (($targets&n));then
+        doCommandForNginx $command
+    fi
+}
+
+main "$@"

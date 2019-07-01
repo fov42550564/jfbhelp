@@ -1,0 +1,22 @@
+#!/bin/bash
+
+# 该文件只能在阿里云上使用
+
+# 恢复mongodb
+# mongorestore -h localhost -d pdshop ${version}/pdshop
+# 恢复mysql
+# mysql -uroot pdshop < ${version}/pdshop.sql
+
+version=${1-`date '+%Y-%m-%d-%H-%M-%S'`}
+mkdir -p ${version}
+echo 版本：${version}
+mongodump -h localhost -d pdshop -o ${version}
+mysqldump -uroot pdshop Accounts Bills Records OrderPayments TruckPayments > ${version}/pdshop.sql
+rm -f *.tar.gz
+if [ "$2" = "nofs" ];then
+    rm -f $version/pdshop/fs.chunks.bson
+fi
+tar zcvf ${version}.tar.gz ${version}
+rm -fr ${version}
+echo done
+

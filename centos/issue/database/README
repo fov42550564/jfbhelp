@@ -1,0 +1,3 @@
+1. dump 文件需要上传到aliyun相应的目录
+2. ./xdb -d, dump aliyun 的 数据库到本地，同时备份本地数据库
+3. ./xdb -r, 恢复版本

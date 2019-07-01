@@ -1,0 +1,105 @@
+#!/bin/bash
+
+source ~/command/common
+
+dir=$PWD
+apiServer="http://192.168.0.249"
+socketServer="ws://192.168.0.249"
+
+function genDistForServer() {
+    pushd ../${1}/project 1>/dev/null
+    vim -e -s config.js -c ":%s#const PRODUCT.*#const PRODUCT = true;#" -c ":%s#apiServer:.*#apiServer: '${2}',#" -c ":%s#authorizationCode:.*#authorizationCode: '${3}',#" -c ":wq"
+    npm run dist
+    vim -e -s config.js -c ":%s#const PRODUCT.*#const PRODUCT = false;#"  -c ":%s#apiServer:.*#apiServer: 'http://localhost:3000',#" -c ":%s#authorizationCode:.*#authorizationCode: '', // 后台操作密码#" -c ":wq"
+    pushd ../dist 1>/dev/null
+    tar zcvf app.tar.gz app.js package.json
+    mv app.tar.gz $dir/projects/${1}/
+    popd 1>/dev/null
+    popd 1>/dev/null
+}
+
+function genDistForJavaServer() {
+    pushd ../${1}/project 1>/dev/null
+    __rm .__target
+    __mv target .__target
+    ./release test
+    mv target/${2}.war $dir/projects/${1}/
+    __rm target
+    __mv .__target target
+    popd 1>/dev/null
+}
+
+function genDistForClient() {
+    pushd ../${1}/project 1>/dev/null
+    vim -e -s config.js -c ":%s#apiServer:.*#apiServer: '${2}',#" -c ":%s#socketServer:.*#socketServer: '${3}',#" -c ":wq"
+    npm run dist
+    vim -e -s config.js -c ":%s#apiServer:.*#apiServer: 'http://localhost:3000',#" -c ":%s#socketServer:.*#socketServer: 'ws://localhost:3000',#" -c ":wq"
+    pushd ../dist 1>/dev/null
+    tar zcvf app.tar.gz app.js main.css package.json public
+    mv app.tar.gz $dir/projects/${1}/
+    popd 1>/dev/null
+    popd 1>/dev/null
+}
+
+function show_version() {
+    echo "===== version: $1 ====="
+    echo "远程版本："
+    curl ${apiServer}/apps/${1}/version.json
+    echo "本地版本（ `pwd`/projects/${1}/version.json ）："
+    cat ./projects/${1}/version.json
+}
+
+function show_help()
+{
+    echo "xdist [-t[targets]]"
+    echo ""
+    echo "  -t [targets]: targets as follows:"
+    echo "      p, i, s [p: SPPolice_PC, i: SPImage, s: SPServer]"
+    echo "      uses: -t p+i+s"
+    echo "      uses: -t all"
+    echo ""
+    echo "  -v: show version"
+    echo ""
+}
+
+function main()
+{
+    local has_oper p i s all targets version
+    has_oper=0; p=1; i=2; s=4; all=7;
+    while getopts :t:v opt;do
+        has_oper=1
+        case $opt in
+            t)targets=$(($OPTARG));;
+            v)version="yes";;
+            *)show_help;exit;;
+        esac
+    done
+
+    [ $has_oper -eq 0 ] && show_help && exit
+
+    if (($targets&p));then
+        if [ "$version" = "yes" ];then
+            show_version SPPolice_PC
+        else
+            genDistForClient SPPolice_PC $apiServer $socketServer
+        fi
+    fi
+
+    if (($targets&i));then
+        if [ "$version" = "yes" ];then
+            show_version SPImage
+        else
+            genDistForServer SPImage $apiServer $authorizationCode
+        fi
+    fi
+
+    if (($targets&s));then
+        if [ "$version" = "yes" ];then
+            show_version SPServer
+        else
+            genDistForJavaServer SPServer server
+        fi
+    fi
+}
+
+main "$@"

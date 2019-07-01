@@ -1,0 +1,16 @@
+#!/bin/bash
+dbname=db_smart_plate
+
+project_path=$(cd `dirname $0`; pwd)
+
+MYCMD="mysql --user=root --password=123456 --database=${dbname}"
+MOCMD="mongo 127.0.0.1:27017/${dbname} --norc --eval"
+
+$MYCMD -e " \
+  drop database $dbname; \
+  create database $dbname;"
+
+$MOCMD " \
+  db.dropDatabase();"
+
+$MYCMD < ${project_path}/../init/Regions.sql

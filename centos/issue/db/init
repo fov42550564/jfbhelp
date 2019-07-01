@@ -1,0 +1,15 @@
+#!/bin/bash
+dbname=db_smart_plate
+
+MYCMD="mysql --user=root --password=123456 --database=${dbname} -e"
+
+$MYCMD "
+    delete from tb_court; \
+    delete from tb_court_entry; \
+    delete from tb_building; \
+    delete from tb_shop; \
+    delete from tb_unit; \
+    delete from tb_house; \
+    delete from tb_people; \
+    delete from tb_car; \
+"

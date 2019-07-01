@@ -1,0 +1,88 @@
+#!/bin/bash
+
+#add for chkconfig
+#chkconfig: 2345 99 30
+#description: start for service
+#processname: service
+
+export PATH=$PATH:/root/tools/node/bin:/root/tools/mongodb/bin
+export DIR=/root/whxx
+
+#检查pid是否存在
+function check_pid_start() {
+    local name command count
+    name="$1";command="$2";
+    count=`ps -A|grep ${name}|wc -l`
+    if [ 0 == ${count} ];then
+        echo "start ${name}"
+        ${command}
+    else
+        echo "${name} already started"
+    fi
+}
+
+#检查pm2工程是否存在
+function check_pm2_start() {
+    local name id
+    name="$1";
+    id=`pm2 id ${name}|sed 's/]\|\[\| //g'`
+    if [ -z "${id}" ];then
+        echo "start ${name} with pm2"
+        pushd ${DIR}/${name}
+        pm2 start "app.js" --name ${name}
+        popd
+    else
+        echo "${name} already started"
+    fi
+}
+
+#检查java工程是否存在
+function check_java_start() {
+    local dir name count
+    dir="$1";name="$2";
+    count=`ps -ef |grep java|grep $name|wc -l`
+    if [ $count != 0 ];then
+        echo "$dir/$name is running"
+    else
+        prefix=$(date '+%Y-%m-%d-%H-%M-%S')
+        pushd $dir
+        echo "$dir/$name is starting..."
+        echo "nohup java -jar $name start > log/${prefix}.log &"
+        nohup java -jar $name start > log/${prefix}.log 2>&1 &
+        popd
+    fi
+}
+
+#启动mysqld
+function start_mysqld() {
+    service mysqld start
+}
+
+#启动mongodb
+function start_mongodb() {
+    /root/tools/mongodb/bin/mongod -f /root/database/mongodb/mongodb.conf
+}
+
+#启动nginx
+function start_nginx() {
+    mkdir -p /root/whxx/nginx/logs
+    nginx -p /root/whxx/nginx -c config/nginx.conf
+}
+
+mkdir -p /root/whxx/SPServer/download/apps/SPServer
+mkdir -p /root/whxx/SSPServer/download/apps/SPImage
+mkdir -p /root/whxx/SSPServer/download/apps/SPPolice_PC
+mkdir -p /root/whxx/SSPServer/download/apps/PDPolice
+echo check_pid_start mysqld start_mysqld
+check_pid_start mysqld start_mysqld
+echo check_pid_start mongod start_mongodb
+check_pid_start mongod start_mongodb
+echo check_pid_start nginx start_nginx
+check_pid_start nginx start_nginx
+sleep 3
+echo check_pid_start java start_java
+check_java_start java SPServer server.war
+echo check_pm2_start SPPolice_PC
+check_pm2_start SPPolice_PC
+echo check_pm2_start SPImage
+check_pm2_start SPImage

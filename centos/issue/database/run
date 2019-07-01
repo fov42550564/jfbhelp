@@ -1,0 +1,15 @@
+#!/bin/bash
+#
+# 开启自启动
+# vim /etc/rc.d/rc.local
+# 添加下面一行即可
+# /root/tools/mongodb/bin/mongod -f /root/database/mongodb/mongodb.conf
+
+#
+# 关闭服务
+# mongo
+# use admin
+# db.shutdownServer()
+
+/root/tools/mongodb/bin/mongod -f /root/database/mongodb/mongodb.conf
+service mysql start

@@ -1,0 +1,88 @@
+#!/bin/bash
+
+source ~/command/common
+_remote_root=/root/database/
+_oper=0
+
+function xdb_dump_database()
+{
+	local ip password version
+
+	if ! [ -a "${1}" ];then
+        echo "config file not exist"
+        exit
+    fi
+
+	ip=`sed '/^public_ip=/!d;s/.*=//' ${1}`
+	password=`sed '/^password=/!d;s/.*=//' ${1}`
+
+	version=$(date '+%Y-%m-%d-%H-%M-%S')
+	mkdir -p data/aliyun data/local/${version}
+
+	mongodump -h localhost -d pdshop -o data/local/${version}
+	mysqldump -uroot pdshop Accounts Bills OrderPayments TruckPayments > data/local/${version}/pdshop.sql
+
+	expect -c "
+	set timeout 30000;
+	spawn ssh root@${ip};
+	expect {
+		\"*password:\" {send \"${password}\r\"; exp_continue}
+		\"*#\" {send \" cd  ${_remote_root}\r./dump ${version} nofs\rexit\r\"}
+	}
+	interact
+	"
+	expect -c "
+	set timeout 30000;
+	spawn scp -r "root@${ip}:${_remote_root}/${version}.tar.gz" data/aliyun/
+	expect {
+		\"*password:\" {send \"${password}\r\"}
+	}
+	interact
+	"
+	cd data/aliyun/
+	tar zxvf ${version}.tar.gz ${version}
+	rm -f ${version}.tar.gz
+
+	mysql -uroot pdshop < ${version}/pdshop.sql
+	mongorestore --drop -h localhost -d pdshop ${version}/pdshop
+}
+
+function xdb_restore_version()
+{
+	cd data
+	mysql -uroot pdshop < ${1}/pdshop.sql
+	mongorestore --drop -h localhost -d pdshop ${1}/pdshop
+	exit
+}
+
+function xdb_restore_database()
+{
+	_list_=($(ls -r data/${1}|xargs -I bbbb echo ${1}/bbbb))
+	__radiobox "xdb_restore_version" "no" "restore" "select bellow versions to restore"
+}
+
+function show_help()
+{
+	local -a list
+	list="xdb"
+	list=("${list[@]}" "Usage: dump aliyun database to local and restore by versions")
+	list=("${list[@]}" "    -d [config]: dump aliyun database with config")
+	list=("${list[@]}" "    -r [local|aliyun]: restore local or aliyun database")
+	list=("${list[@]}" "    -h: show help")
+	__msgbox "${list[@]}"
+}
+
+
+function main()
+{
+    local config
+	while getopts :d:r:h opt;do
+		case ${opt} in
+			d)xdb_dump_database "${OPTARG}";;
+			r)xdb_restore_database "${OPTARG}";;
+			*)show_help;exit;;
+		esac
+	done
+}
+
+main "$@"
