@@ -6,7 +6,7 @@
 #processname: service
 
 export PATH=$PATH:/root/tools/node/bin:/root/tools/mongodb/bin
-export DIR=/root/whxx
+export DIR=/root/main
 
 #检查pid是否存在
 function check_pid_start() {
@@ -65,14 +65,14 @@ function start_mongodb() {
 
 #启动nginx
 function start_nginx() {
-    mkdir -p /root/whxx/nginx/logs
-    nginx -p /root/whxx/nginx -c config/nginx.conf
+    mkdir -p /root/main/nginx/logs
+    nginx -p /root/main/nginx -c config/nginx.conf
 }
 
-mkdir -p /root/whxx/SPServer/download/apps/SPServer
-mkdir -p /root/whxx/SSPServer/download/apps/SPImage
-mkdir -p /root/whxx/SSPServer/download/apps/SPPolice_PC
-mkdir -p /root/whxx/SSPServer/download/apps/PDPolice
+mkdir -p /root/main/SPServer/download/apps/SPServer
+mkdir -p /root/main/SSPServer/download/apps/SPImage
+mkdir -p /root/main/SSPServer/download/apps/SPPolice_PC
+mkdir -p /root/main/SSPServer/download/apps/PDPolice
 echo check_pid_start mysqld start_mysqld
 check_pid_start mysqld start_mysqld
 echo check_pid_start mongod start_mongodb

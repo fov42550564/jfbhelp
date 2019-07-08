@@ -3,7 +3,7 @@
 source ~/command/common
 
 _mainServer=SPServer
-_remote_root=/root/whxx
+_remote_root=/root/main
 _remote_download_dir=$_remote_root/${_mainServer}/download/apps
 _type="version"
 _suffix="_default"
