@@ -25,8 +25,8 @@ function doCommandForJava() {
             prefix=$(date '+%Y-%m-%d-%H-%M-%S')
             pushd $2
             echo "$2/$3 is starting..."
-            echo "nohup java -jar $3 start > log/${prefix}.log &"
-            nohup java -jar $3 start > log/${prefix}.log 2>&1 &
+            echo "nohup java -jar $3 > log/${prefix}.log &"
+            nohup java -jar $3 > log/${prefix}.log 2>&1 &
             popd
         fi
     elif [ "$1" = "restart" ];then
@@ -48,7 +48,7 @@ function doCommandForJava() {
         if [ -z $appId ];then
             echo "$2/$3 is not running"
         else
-            ps -ef |grep java|grep $3|
+            ps -ef |grep java|grep $3
         fi
     fi
 }
@@ -112,7 +112,7 @@ function main()
         mkdir -p SPServer/download/apps/SPServer
         mkdir -p SPServer/download/apps/SPImage
         mkdir -p SPServer/download/apps/SPPolice_PC
-        mkdir -p SPServer/download/apps/PDPolice
+        mkdir -p SPServer/download/apps/SPPolice
         doCommandForJava $command SPServer server.war
     fi
 

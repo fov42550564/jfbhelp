@@ -60,6 +60,8 @@ function start_mysqld() {
 
 #启动mongodb
 function start_mongodb() {
+    mkdir -p /root/database/mongodb/logs
+    mkdir -p /root/database/mongodb/db 
     /root/tools/mongodb/bin/mongod -f /root/database/mongodb/mongodb.conf
 }
 
@@ -69,10 +71,11 @@ function start_nginx() {
     nginx -p /root/main/nginx -c config/nginx.conf
 }
 
+mkdir -p /root/main/SPServer/log
 mkdir -p /root/main/SPServer/download/apps/SPServer
-mkdir -p /root/main/SSPServer/download/apps/SPImage
-mkdir -p /root/main/SSPServer/download/apps/SPPolice_PC
-mkdir -p /root/main/SSPServer/download/apps/PDPolice
+mkdir -p /root/main/SPServer/download/apps/SPImage
+mkdir -p /root/main/SPServer/download/apps/SPPolice_PC
+mkdir -p /root/main/SPServer/download/apps/SPPolice
 echo check_pid_start mysqld start_mysqld
 check_pid_start mysqld start_mysqld
 echo check_pid_start mongod start_mongodb

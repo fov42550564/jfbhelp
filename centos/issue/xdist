@@ -3,8 +3,8 @@
 source ~/command/common
 
 dir=$PWD
-apiServer="http://192.168.0.249"
-socketServer="ws://192.168.0.249"
+apiServer="http://47.108.67.69"
+socketServer="ws://47.108.67.69"
 
 function genDistForServer() {
     pushd ../${1}/project 1>/dev/null
@@ -22,7 +22,7 @@ function genDistForJavaServer() {
     pushd ../${1}/project 1>/dev/null
     __rm .__target
     __mv target .__target
-    ./release test
+    ./release pro
     mv target/${2}.war $dir/projects/${1}/
     __rm target
     __mv .__target target
@@ -31,9 +31,9 @@ function genDistForJavaServer() {
 
 function genDistForClient() {
     pushd ../${1}/project 1>/dev/null
-    vim -e -s config.js -c ":%s#apiServer:.*#apiServer: '${2}',#" -c ":%s#socketServer:.*#socketServer: '${3}',#" -c ":wq"
+    vim -e -s config.js -c ":%s#apiServer:.*#apiServer: '${2}',#" -c ":%s#plateServer:.*#plateServer: '${2}',#" -c ":%s#socketServer:.*#socketServer: '${3}',#" -c ":wq"
     npm run dist
-    vim -e -s config.js -c ":%s#apiServer:.*#apiServer: 'http://localhost:3000',#" -c ":%s#socketServer:.*#socketServer: 'ws://localhost:3000',#" -c ":wq"
+    vim -e -s config.js -c ":%s#apiServer:.*#apiServer: 'http://localhost:3000',#" -c ":%s#plateServer:.*#plateServer: 'http://localhost:3002',#"  -c ":%s#socketServer:.*#socketServer: 'ws://localhost:3000',#" -c ":wq"
     pushd ../dist 1>/dev/null
     tar zcvf app.tar.gz app.js main.css package.json public
     mv app.tar.gz $dir/projects/${1}/

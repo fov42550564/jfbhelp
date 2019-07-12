@@ -8,8 +8,7 @@ _remote_download_dir=$_remote_root/${_mainServer}/download/apps
 _type="version"
 _suffix="_default"
 _name=""
-_ip="192.168.0.249"
-_password="123"
+_config_file="config"
 
 function xissue_version()
 {
@@ -17,7 +16,7 @@ function xissue_version()
 	set timeout 30000;
 	spawn scp -r "projects/${_name}/version.json" "root@${_ip}:${_remote_download_dir}/${_name}/version.json"
 	expect {
-		\"*_password:\" {send \"${_password}\r\"}
+		\"*password:\" {send \"${_password}\r\"}
 	}
 	interact
 	"
@@ -33,7 +32,7 @@ function xissue_ios()
 	set timeout 30000;
 	spawn scp -r "${_name}.tar.gz" "root@${_ip}:${_remote_download_dir}/${_name}/${_name}.tar.gz"
 	expect {
-		\"*_password:\" {send \"${_password}\r\"}
+		\"*password:\" {send \"${_password}\r\"}
 	}
 	interact
 	"
@@ -43,7 +42,7 @@ function xissue_ios()
 	set timeout 30000;
 	spawn ssh root@${_ip};
 	expect {
-		\"*_password:\" {send \"${_password}\r\"; exp_continue}
+		\"*password:\" {send \"${_password}\r\"; exp_continue}
 		\"*#\" {send \" cd  ${_remote_download_dir}/${_name}/\rtar zxf ${_name}.tar.gz\rrm -f ${_name}.tar.gz\rexit\r\"}
 	}
 	interact
@@ -61,7 +60,7 @@ function xissue_android()
 	set timeout 30000;
 	spawn scp -r "${_name}.tar.gz" "root@${_ip}:${_remote_download_dir}/${_name}/${_name}.tar.gz"
 	expect {
-		\"*_password:\" {send \"${_password}\r\"}
+		\"*password:\" {send \"${_password}\r\"}
 	}
 	interact
 	"
@@ -71,7 +70,7 @@ function xissue_android()
 	set timeout 30000;
 	spawn ssh root@${_ip};
 	expect {
-		\"*_password:\" {send \"${_password}\r\"; exp_continue}
+		\"*password:\" {send \"${_password}\r\"; exp_continue}
 		\"*#\" {send \" cd  ${_remote_download_dir}/${_name}/\rtar zxf ${_name}.tar.gz\rrm -f ${_name}.tar.gz\rexit\r\"}
 	}
 	interact
@@ -90,7 +89,7 @@ function xissue_jsandroid()
 	set timeout 30000;
 	spawn scp -r "${_name}.tar.gz" "root@${_ip}:${_remote_download_dir}/${_name}/${_name}.tar.gz"
 	expect {
-		\"*_password:\" {send \"${_password}\r\"}
+		\"*password:\" {send \"${_password}\r\"}
 	}
 	interact
 	"
@@ -100,7 +99,7 @@ function xissue_jsandroid()
 	set timeout 30000;
 	spawn ssh root@${_ip};
 	expect {
-		\"*_password:\" {send \"${_password}\r\"; exp_continue}
+		\"*password:\" {send \"${_password}\r\"; exp_continue}
 		\"*#\" {send \" cd  ${_remote_download_dir}/${_name}/\rtar zxf ${_name}.tar.gz\rrm -f ${_name}.tar.gz\rexit\r\"}
 	}
 	interact
@@ -119,7 +118,7 @@ function xissue_jsios()
 	set timeout 30000;
 	spawn scp -r "${_name}.tar.gz" "root@${_ip}:${_remote_download_dir}/${_name}/${_name}.tar.gz"
 	expect {
-		\"*_password:\" {send \"${_password}\r\"}
+		\"*password:\" {send \"${_password}\r\"}
 	}
 	interact
 	"
@@ -129,7 +128,7 @@ function xissue_jsios()
 	set timeout 30000;
 	spawn ssh root@${_ip};
 	expect {
-		\"*_password:\" {send \"${_password}\r\"; exp_continue}
+		\"*password:\" {send \"${_password}\r\"; exp_continue}
 		\"*#\" {send \" cd  ${_remote_download_dir}/${_name}/\rtar zxf ${_name}.tar.gz\rrm -f ${_name}.tar.gz\rexit\r\"}
 	}
 	interact
@@ -152,7 +151,7 @@ function xissue_js()
 	set timeout 30000;
 	spawn scp -r "${_name}.tar.gz" "root@${_ip}:${_remote_download_dir}/${_name}/${_name}.tar.gz"
 	expect {
-		\"*_password:\" {send \"${_password}\r\"}
+		\"*password:\" {send \"${_password}\r\"}
 	}
 	interact
 	"
@@ -162,7 +161,7 @@ function xissue_js()
 	set timeout 30000;
 	spawn ssh root@${_ip};
 	expect {
-		\"*_password:\" {send \"${_password}\r\"; exp_continue}
+		\"*password:\" {send \"${_password}\r\"; exp_continue}
 		\"*#\" {send \" cd  ${_remote_download_dir}/${_name}/\rtar zxf ${_name}.tar.gz\rrm -f ${_name}.tar.gz\rexit\r\"}
 	}
 	interact
@@ -174,7 +173,7 @@ function xissue_java_server()
 	set timeout 30000;
 	spawn scp -r "projects/${_name}/server.war" "root@${_ip}:${_remote_root}/${_name}/server.war"
 	expect {
-		\"*_password:\" {send \"${_password}\r\"}
+		\"*password:\" {send \"${_password}\r\"}
 	}
 	interact
 	"
@@ -182,8 +181,8 @@ function xissue_java_server()
 	set timeout 30000;
 	spawn ssh root@${_ip};
 	expect {
-		\"*_password:\" {send \"${_password}\r\"; exp_continue}
-		\"*#\" {send \" cd  ${_remote_root}/${_name}\rservice ${_name} restart\rexit\r\"}
+		\"*password:\" {send \"${_password}\r\"; exp_continue}
+		\"*#\" {send \" cd  ${_remote_root}\r./run -t s -c restart\rexit\r\"}
 	}
 	interact
 	"
@@ -191,7 +190,7 @@ function xissue_java_server()
 	set timeout 30000;
 	spawn scp -r "projects/${_name}/version.json" "root@${_ip}:${_remote_download_dir}/${_name}/version.json"
 	expect {
-		\"*_password:\" {send \"${_password}\r\"}
+		\"*password:\" {send \"${_password}\r\"}
 	}
 	interact
 	"
@@ -202,7 +201,7 @@ function xissue_server()
 	set timeout 30000;
 	spawn scp -r "projects/${_name}/app.tar.gz" "root@${_ip}:${_remote_root}/${_name}/app.tar.gz"
 	expect {
-		\"*_password:\" {send \"${_password}\r\"}
+		\"*password:\" {send \"${_password}\r\"}
 	}
 	interact
 	"
@@ -210,7 +209,7 @@ function xissue_server()
 	set timeout 30000;
 	spawn ssh root@${_ip};
 	expect {
-		\"*_password:\" {send \"${_password}\r\"; exp_continue}
+		\"*password:\" {send \"${_password}\r\"; exp_continue}
 		\"*#\" {send \" cd  ${_remote_root}/${_name}\rtar zxf app.tar.gz\rrm -f app.tar.gz\rpm2 restart ${_name} --update-env\rexit\r\"}
 	}
 	interact
@@ -219,7 +218,7 @@ function xissue_server()
 	set timeout 30000;
 	spawn scp -r "projects/${_name}/version.json" "root@${_ip}:${_remote_root}/${_mainServer}/download/apps/${_name}/version.json"
 	expect {
-		\"*_password:\" {send \"${_password}\r\"}
+		\"*password:\" {send \"${_password}\r\"}
 	}
 	interact
 	"
@@ -230,7 +229,7 @@ function xissue_web()
 	set timeout 30000;
 	spawn scp -r "projects/${_name}/app.tar.gz" "root@${_ip}:${_remote_root}/${_name}/app.tar.gz"
 	expect {
-		\"*_password:\" {send \"${_password}\r\"}
+		\"*password:\" {send \"${_password}\r\"}
 	}
 	interact
 	"
@@ -238,7 +237,7 @@ function xissue_web()
 	set timeout 30000;
 	spawn ssh root@${_ip};
 	expect {
-		\"*_password:\" {send \"${_password}\r\"; exp_continue}
+		\"*password:\" {send \"${_password}\r\"; exp_continue}
 		\"*#\" {send \" cd  ${_remote_root}/${_name}\rrm -fr public\rtar zxf app.tar.gz\rrm -f app.tar.gz\rpm2 restart ${_name} --update-env\rexit\r\"}
 	}
 	interact
@@ -247,7 +246,7 @@ function xissue_web()
 	set timeout 30000;
 	spawn scp -r "projects/${_name}/version.json" "root@${_ip}:${_remote_root}/${_mainServer}/download/apps/${_name}/version.json"
 	expect {
-		\"*_password:\" {send \"${_password}\r\"}
+		\"*password:\" {send \"${_password}\r\"}
 	}
 	interact
 	"
@@ -296,6 +295,11 @@ function main()
 		esac
 	done
 	[ $has_oper -eq 0 -o "$_name" = "" ] && show_help && exit
+
+	! [ -f "$_config_file" ] && echo "no config file" && exit
+
+	_ip=`sed '/^public_ip=/!d;s/.*=//' ${_config_file}`
+	_password=`sed '/^password=/!d;s/.*=//' ${_config_file}`
 
 	xissue_project
 }
