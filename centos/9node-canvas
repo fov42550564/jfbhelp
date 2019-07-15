@@ -1,0 +1,3 @@
+中文方框的问题：
+1. yum groupinstall "Chinese Support"
+2. yum groupinstall Fonts
