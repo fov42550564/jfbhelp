@@ -5,3 +5,5 @@
 5. 在redmine-3.4.5-1/apps/redmine/htdocs/config/database.yml文件中可以查看redmine使用的mysql数据库的用户名bitnami和密码
 6. 在安装目录执行./use_redmine
 7. 输入命令mysql -u bitnami -p，回车后输入1配置文件中的密码进入mysql命令行mysql>
+8. 启动停止命令：ctlscript.sh help
+9: https冲突，搜索443，将所有的443修改为444，重启即可。
