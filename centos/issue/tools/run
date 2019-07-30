@@ -13,6 +13,8 @@ function doCommand() {
         pm2 delete "$2"
     elif [ "$1" = "status" ];then
         pm2 list "$2"
+    elif [ "$1" = "log" ];then
+        pm2 logs "$2"
     fi
 }
 
@@ -22,6 +24,7 @@ function doCommandForJava() {
         if [ $count != 0 ];then
             echo "$2/$3 is running"
         else
+            ls log|xargs -I bbbb mv log/bbbb log/.bbbb
             prefix=$(date '+%Y-%m-%d-%H-%M-%S')
             pushd $2
             echo "$2/$3 is starting..."
@@ -50,6 +53,8 @@ function doCommandForJava() {
         else
             ps -ef |grep java|grep $3
         fi
+    elif [ "$1" = "log" ];then
+        tail -f $2/log/*.log
     fi
 }
 
