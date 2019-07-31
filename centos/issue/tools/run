@@ -24,9 +24,9 @@ function doCommandForJava() {
         if [ $count != 0 ];then
             echo "$2/$3 is running"
         else
-            ls log|xargs -I bbbb mv log/bbbb log/.bbbb
             prefix=$(date '+%Y-%m-%d-%H-%M-%S')
             pushd $2
+            ls log|xargs -I bbbb mv log/bbbb log/.bbbb
             echo "$2/$3 is starting..."
             echo "nohup java -jar $3 > log/${prefix}.log &"
             nohup java -jar $3 > log/${prefix}.log 2>&1 &
