@@ -24,3 +24,6 @@ Connect to ownCloud CI database
 
 username: autotest
 password: owncloud
+
+传输文件：
+scp -P 49160 init.sql root@localhost:/root/
