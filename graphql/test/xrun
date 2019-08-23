@@ -1,1 +1,0 @@
-xget -u "http://localhost:4000/graphql?query={user(id:1){id,name}}"
