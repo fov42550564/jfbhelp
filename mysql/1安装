@@ -1,20 +1,23 @@
 ### 安装
 brew install mysql
 
-启动服务
+1. 启动服务
 sudo mysql.server start
 sudo mysql.server stop
 sudo mysql.server restart
 
-mac下停止进程
+2. mac下停止进程
 brew services stop mysql
 
-mac下的配置文件
+3. mac下的配置文件
 /usr/local/etc/my.cnf
 
-mac外网访问
-1. 修改 /usr/local/etc/my.cnf 的 bind-address 0.0.0.0
-2. 执行：
+4. mac外网访问
+a. 修改 /usr/local/etc/my.cnf 的 bind-address 0.0.0.0
+b. 执行：
 USE mysql;
 SELECT user, host FROM user;
 UPDATE user SET host='%' WHERE user='root';
+
+5. 查看datadir
+mysql> show variables like 'datadir';
