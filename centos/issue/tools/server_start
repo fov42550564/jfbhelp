@@ -46,6 +46,7 @@ function check_java_start() {
     else
         prefix=$(date '+%Y-%m-%d-%H-%M-%S')
         pushd $dir
+        ls log|xargs -I bbbb mv log/bbbb log/.bbbb
         echo "$dir/$name is starting..."
         echo "nohup java -jar $name start > log/${prefix}.log &"
         nohup java -jar $name start > log/${prefix}.log 2>&1 &
@@ -61,7 +62,7 @@ function start_mysqld() {
 #启动mongodb
 function start_mongodb() {
     mkdir -p /root/database/mongodb/logs
-    mkdir -p /root/database/mongodb/db 
+    mkdir -p /root/database/mongodb/db
     /root/tools/mongodb/bin/mongod -f /root/database/mongodb/mongodb.conf
 }
 
@@ -83,8 +84,8 @@ check_pid_start mongod start_mongodb
 echo check_pid_start nginx start_nginx
 check_pid_start nginx start_nginx
 sleep 3
-echo check_pid_start java start_java
-check_java_start java SPServer server.war
+echo check_java_start SPServer server.war
+check_java_start SPServer server.war
 echo check_pm2_start SPPolice_PC
 check_pm2_start SPPolice_PC
 echo check_pm2_start SPImage
