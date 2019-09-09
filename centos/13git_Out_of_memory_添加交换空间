@@ -1,0 +1,10 @@
+1、检查是否配置：swapon -s
+2、检查目前系统状态：free -m
+3、检查可用存储空间：df -h
+4、根据情况创建swap空间：sudo fallocate -l 4G /swapfile
+5、查看大小：ls -lh /
+6、将创建的swap空间用于swap：sudo mkswap /swapfile
+7、开始使用：sudo swapon /swapfile
+8、确认下：swapon -s
+9、永久生效：sudo vim /etc/fstab，最后一行添加：/swapfile swap swap sw 0 0
+10、重启：reboot
