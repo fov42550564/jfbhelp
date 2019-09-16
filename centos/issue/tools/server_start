@@ -1,10 +1,5 @@
 #!/bin/bash
 
-#add for chkconfig
-#chkconfig: 2345 99 30
-#description: start for service
-#processname: service
-
 export PATH=$PATH:/root/tools/node/bin:/root/tools/mongodb/bin
 export DIR=/root/main
 
@@ -72,21 +67,30 @@ function start_nginx() {
     nginx -p /root/main/nginx -c config/nginx.conf
 }
 
-mkdir -p /root/main/SPServer/log
-mkdir -p /root/main/SPServer/download/apps/SPServer
-mkdir -p /root/main/SPServer/download/apps/SPImage
-mkdir -p /root/main/SPServer/download/apps/SPPolice_PC
-mkdir -p /root/main/SPServer/download/apps/SPPolice
 echo check_pid_start mysqld start_mysqld
 check_pid_start mysqld start_mysqld
 echo check_pid_start mongod start_mongodb
 check_pid_start mongod start_mongodb
 echo check_pid_start nginx start_nginx
 check_pid_start nginx start_nginx
+
 sleep 3
-echo check_java_start SPServer server.war
-check_java_start SPServer server.war
+mkdir -p /root/main/SPServer/log
+mkdir -p /root/main/SPServer/download/apps/SPServer
+mkdir -p /root/main/SPServer/download/apps/SPImage
+mkdir -p /root/main/SPServer/download/apps/SPPolice_PC
+mkdir -p /root/main/SPServer/download/apps/SPPolice
+echo check_java_start SPServer spserver.war
+check_java_start SPServer spserver.war
 echo check_pm2_start SPPolice_PC
 check_pm2_start SPPolice_PC
 echo check_pm2_start SPImage
 check_pm2_start SPImage
+
+mkdir -p /root/main/SCServer/log
+mkdir -p /root/main/SCServer/download/apps/SCServer
+mkdir -p /root/main/SCServer/download/apps/SCPolice_PC
+echo check_java_start SCServer scserver.war
+check_java_start SCServer scserver.war
+echo check_pm2_start SCPolice_PC
+check_pm2_start SCPolice_PC

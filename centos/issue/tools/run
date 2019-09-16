@@ -20,7 +20,7 @@ function doCommand() {
 
 function doCommandForJava() {
     if [ "$1" = "start" ];then
-        count=`ps -ef |grep java|grep $3|wc -l`
+        count=`ps -ef |grep java|grep "\<$3"|wc -l`
         if [ $count != 0 ];then
             echo "$2/$3 is running"
         else
@@ -37,7 +37,7 @@ function doCommandForJava() {
         sleep 3
         doCommandForJava start $2 $3
     elif [ "$1" = "stop" ];then
-        appId=`ps -ef |grep java|grep $3|awk '{print $2}'`
+        appId=`ps -ef |grep java|grep "\<$3"|awk '{print $2}'`
         if [ -z $appId ];then
             echo "$2/$3 is not running"
         else
@@ -47,7 +47,7 @@ function doCommandForJava() {
     elif [ "$1" = "delete" ];then
         doCommandForJava stop $2 $3
     elif [ "$1" = "status" ];then
-        appId=`ps -ef |grep java|grep $3|awk '{print $2}'`
+        appId=`ps -ef |grep java|grep "\<$3"|awk '{print $2}'`
         if [ -z $appId ];then
             echo "$2/$3 is not running"
         else
@@ -85,7 +85,7 @@ function show_help()
     echo "      start restart stop delete status"
     echo ""
     echo "  -t [targets]:targets as follows:"
-    echo "      p, i, s, n [ p: SPPolice_PC, i: SPImage, s: SPServer, n: nginx]"
+    echo "      p, i, s, n, cs, cp [ p: SPPolice_PC, i: SPImage, s: SPServer, n: nginx, cs: SCServer, cp: SCPolice_PC]"
     echo "      uses: -t p+i"
     echo "      uses: -t all"
     echo ""
@@ -94,7 +94,7 @@ function show_help()
 function main()
 {
     local has_oper a o c s all targets command
-    has_oper=0; p=1; i=2; s=4; n=8; all=15;
+    has_oper=0; p=1; i=2; s=4; n=8; cs=16; cp=32; all=255;
     while getopts :t:c: opt;do
         has_oper=1
         case $opt in
@@ -123,6 +123,16 @@ function main()
 
     if (($targets&n));then
         doCommandForNginx $command
+    fi
+
+    if (($targets&cp));then
+        doCommand $command SCPolice_PC
+    fi
+
+    if (($targets&cs));then
+        mkdir -p SCServer/download/apps/SCServer
+        mkdir -p SCServer/download/apps/SCPolice_PC
+        doCommandForJava $command SCServer scserver.war
     fi
 }
 
