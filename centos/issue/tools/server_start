@@ -7,7 +7,7 @@ export DIR=/root/main
 function check_pid_start() {
     local name command count
     name="$1";command="$2";
-    count=`ps -A|grep ${name}|wc -l`
+    count=`ps -A|grep "\<${name}"|wc -l`
     if [ 0 == ${count} ];then
         echo "start ${name}"
         ${command}
@@ -35,7 +35,7 @@ function check_pm2_start() {
 function check_java_start() {
     local dir name count
     dir="$1";name="$2";
-    count=`ps -ef |grep java|grep $name|wc -l`
+    count=`ps -ef |grep java|grep "\<$name"|wc -l`
     if [ $count != 0 ];then
         echo "$dir/$name is running"
     else
@@ -67,6 +67,7 @@ function start_nginx() {
     nginx -p /root/main/nginx -c config/nginx.conf
 }
 
+# common
 echo check_pid_start mysqld start_mysqld
 check_pid_start mysqld start_mysqld
 echo check_pid_start mongod start_mongodb
@@ -74,12 +75,14 @@ check_pid_start mongod start_mongodb
 echo check_pid_start nginx start_nginx
 check_pid_start nginx start_nginx
 
+# plate
 sleep 3
 mkdir -p /root/main/SPServer/log
 mkdir -p /root/main/SPServer/download/apps/SPServer
 mkdir -p /root/main/SPServer/download/apps/SPImage
 mkdir -p /root/main/SPServer/download/apps/SPPolice_PC
 mkdir -p /root/main/SPServer/download/apps/SPPolice
+mkdir -p /root/main/SPServer/download/apps/OWHome_PC
 echo check_java_start SPServer spserver.war
 check_java_start SPServer spserver.war
 echo check_pm2_start SPPolice_PC
@@ -87,6 +90,10 @@ check_pm2_start SPPolice_PC
 echo check_pm2_start SPImage
 check_pm2_start SPImage
 
+echo check_pm2_start OWHome_PC
+check_pm2_start OWHome_PC
+
+# city
 mkdir -p /root/main/SCServer/log
 mkdir -p /root/main/SCServer/download/apps/SCServer
 mkdir -p /root/main/SCServer/download/apps/SCPolice_PC
@@ -94,3 +101,19 @@ echo check_java_start SCServer scserver.war
 check_java_start SCServer scserver.war
 echo check_pm2_start SCPolice_PC
 check_pm2_start SCPolice_PC
+
+# data
+mkdir -p /root/main/SDServer/download/apps/SDServer
+mkdir -p /root/main/SDServer/download/apps/SDPolice_PC
+echo check_pm2_start SDServer
+check_pm2_start SDServer
+echo check_pm2_start SDPolice_PC
+check_pm2_start SDPolice_PC
+
+# file
+mkdir -p /root/main/SLServer/download/apps/SLServer
+mkdir -p /root/main/SLServer/download/apps/SLPolice_PC
+echo check_pm2_start SLServer
+check_pm2_start SLServer
+echo check_pm2_start SLPolice_PC
+check_pm2_start SLPolice_PC

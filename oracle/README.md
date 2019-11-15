@@ -17,6 +17,9 @@
 查看当前用户的表名：
 1. select table_name,tablespace_name,num_rows from user_tables;
 
+查看当前用户的序列：
+1. select SEQUENCE_NAME,MIN_VALUE,LAST_NUMBER from user_sequences;
+
 查看是否有该用户：
 1. select username from dba_users where username='XX';
 

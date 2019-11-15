@@ -28,6 +28,7 @@ function doCommandForJava() {
             pushd $2
             ls log|xargs -I bbbb mv log/bbbb log/.bbbb
             echo "$2/$3 is starting..."
+            echo tail -f $2/log/*.log
             echo "nohup java -jar $3 > log/${prefix}.log &"
             nohup java -jar $3 > log/${prefix}.log 2>&1 &
             popd
@@ -38,7 +39,7 @@ function doCommandForJava() {
         doCommandForJava start $2 $3
     elif [ "$1" = "stop" ];then
         appId=`ps -ef |grep java|grep "\<$3"|awk '{print $2}'`
-        if [ -z $appId ];then
+        if [ -z "$appId" ];then
             echo "$2/$3 is not running"
         else
             echo "$2/$3 is stopping..."
@@ -48,12 +49,13 @@ function doCommandForJava() {
         doCommandForJava stop $2 $3
     elif [ "$1" = "status" ];then
         appId=`ps -ef |grep java|grep "\<$3"|awk '{print $2}'`
-        if [ -z $appId ];then
+        if [ -z "$appId" ];then
             echo "$2/$3 is not running"
         else
-            ps -ef |grep java|grep $3
+            ps -ef |grep java|grep "\<$3"
         fi
     elif [ "$1" = "log" ];then
+        echo tail -f $2/log/*.log
         tail -f $2/log/*.log
     fi
 }
@@ -82,10 +84,11 @@ function show_help()
     echo "run -c[command] -t[targets]"
     echo ""
     echo "  -c [command]:command as follows:"
-    echo "      start restart stop delete status"
+    echo "      start restart stop delete status log"
     echo ""
     echo "  -t [targets]:targets as follows:"
-    echo "      p, i, s, n, cs, cp [ p: SPPolice_PC, i: SPImage, s: SPServer, n: nginx, cs: SCServer, cp: SCPolice_PC]"
+    echo "      n, s, i, p, cs, cp, ow [ n: nginx, s: SPServer, i: SPImage, p: SPPolice_PC, cs: SCServer, cp: SCPolice_PC, ow: OWHome_PC]"
+    echo "      ds, dp, ls, lp [ ds: SDServer, dp: SDPolice_PC, ls: SLServer, lp: SLPolice_PC ]"
     echo "      uses: -t p+i"
     echo "      uses: -t all"
     echo ""
@@ -94,7 +97,7 @@ function show_help()
 function main()
 {
     local has_oper a o c s all targets command
-    has_oper=0; p=1; i=2; s=4; n=8; cs=16; cp=32; all=255;
+    has_oper=0; p=1; i=2; s=4; n=8; cs=16; cp=32; ow=64; ds=128; dp=256; ls=512; lp=1024; all=2047;
     while getopts :t:c: opt;do
         has_oper=1
         case $opt in
@@ -105,14 +108,12 @@ function main()
     done
     [ $has_oper -eq 0 ] && show_help && exit
 
-    if (($targets&p));then
-        doCommand $command SPPolice_PC
+    # nginx
+    if (($targets&n));then
+        doCommandForNginx $command
     fi
 
-    if (($targets&i));then
-        doCommand $command SPImage
-    fi
-
+    # plate
     if (($targets&s));then
         mkdir -p SPServer/download/apps/SPServer
         mkdir -p SPServer/download/apps/SPImage
@@ -120,19 +121,43 @@ function main()
         mkdir -p SPServer/download/apps/SPPolice
         doCommandForJava $command SPServer server.war
     fi
-
-    if (($targets&n));then
-        doCommandForNginx $command
+    if (($targets&i));then
+        doCommand $command SPImage
+    fi
+    if (($targets&p));then
+        doCommand $command SPPolice_PC
     fi
 
-    if (($targets&cp));then
-        doCommand $command SCPolice_PC
+
+    # 官网
+    if (($targets&ow));then
+        doCommand $command OWHome_PC
     fi
 
+    # city
     if (($targets&cs));then
         mkdir -p SCServer/download/apps/SCServer
         mkdir -p SCServer/download/apps/SCPolice_PC
         doCommandForJava $command SCServer scserver.war
+    fi
+    if (($targets&cp));then
+        doCommand $command SCPolice_PC
+    fi
+
+    # data
+    if (($targets&ds));then
+        doCommand $command SDServer
+    fi
+    if (($targets&dp));then
+        doCommand $command SDPolice_PC
+    fi
+
+    # file
+    if (($targets&ls));then
+        doCommand $command SLServer
+    fi
+    if (($targets&lp));then
+        doCommand $command SLPolice_PC
     fi
 }
 

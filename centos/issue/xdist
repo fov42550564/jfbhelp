@@ -3,8 +3,8 @@
 source ~/command/common
 
 dir=$PWD
-apiServer="http://47.108.67.69"
-socketServer="ws://47.108.67.69"
+apiServer="https://sp.gzshenou.com"
+socketServer="wss://sp.gzshenou.com"
 
 function genDistForServer() {
     pushd ../${1}/project 1>/dev/null
@@ -41,10 +41,23 @@ function genDistForClient() {
     popd 1>/dev/null
 }
 
+function genDistForApp() {
+    pushd ../${1}/project 1>/dev/null
+    __rm .__dist
+    __mv dist .__dist
+    npm run build
+    __rm $dir/projects/${1}/app
+    mv dist $dir/projects/${1}/app
+    __mv .__dist dist
+    popd 1>/dev/null
+}
+
 function show_version() {
     echo "===== version: $1 ====="
     echo "远程版本："
+    echo curl ${apiServer}/apps/${1}/version.json
     curl ${apiServer}/apps/${1}/version.json
+    echo
     echo "本地版本（ `pwd`/projects/${1}/version.json ）："
     cat ./projects/${1}/version.json
 }
@@ -54,8 +67,8 @@ function show_help()
     echo "xdist [-t[targets]]"
     echo ""
     echo "  -t [targets]: targets as follows:"
-    echo "      p, i, s [p: SPPolice_PC, i: SPImage, s: SPServer]"
-    echo "      uses: -t p+i+s"
+    echo "      p, i, s, a [p: SPPolice_PC, i: SPImage, s: SPServer, a: SPApp, o: OWHome_PC ]"
+    echo "      uses: -t p+i+s+a+o"
     echo "      uses: -t all"
     echo ""
     echo "  -v: show version"
@@ -65,7 +78,7 @@ function show_help()
 function main()
 {
     local has_oper p i s all targets version
-    has_oper=0; p=1; i=2; s=4; all=7;
+    has_oper=0; p=1; i=2; s=4; a=8; o=16; all=255;
     while getopts :t:v opt;do
         has_oper=1
         case $opt in
@@ -85,6 +98,14 @@ function main()
         fi
     fi
 
+    if (($targets&o));then
+        if [ "$version" = "yes" ];then
+            show_version OWHome_PC
+        else
+            genDistForClient OWHome_PC $apiServer $socketServer
+        fi
+    fi
+
     if (($targets&i));then
         if [ "$version" = "yes" ];then
             show_version SPImage
@@ -98,6 +119,14 @@ function main()
             show_version SPServer
         else
             genDistForJavaServer SPServer server
+        fi
+    fi
+
+    if (($targets&a));then
+        if [ "$version" = "yes" ];then
+            show_version SPApp
+        else
+            genDistForApp SPApp
         fi
     fi
 }

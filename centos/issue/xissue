@@ -256,7 +256,7 @@ function show_help()
 	local -a list
 	list="xissue"
 	list=("${list[@]}" "Usage: xissue [-t|-n|-h]")
-	list=("${list[@]}" "xissue -n [name]: SPPolice|SPImage|SPPolice_PC|SPServer")
+	list=("${list[@]}" "xissue -n [name]: SPPolice|SPImage|SPPolice_PC|SPServer|OWHome_PC")
 	list=("${list[@]}" "xissue -t [type]: android/ios/jsandroid/jsios/js [default: version](only for SPPolice)")
 	list=("${list[@]}" "xissue -s [suffix]: input the suffix name of install file (only for release big version of android )[default: _default]")
 	list=("${list[@]}" "xissue -h: show help")
@@ -279,6 +279,7 @@ function xissue_project()
 		SPImage)xissue_server;;
 		SPPolice_PC)xissue_web;;
 		SPPolice)xissue_mobile;;
+		OWHome_PC)xissue_web;;
 	esac
 }
 function main()
