@@ -5,12 +5,13 @@ source ~/command/common
 dir=$PWD
 apiServer="https://sp.gzshenou.com"
 socketServer="wss://sp.gzshenou.com"
+originPort=3020
 
 function genDistForServer() {
     pushd ../${1}/project 1>/dev/null
     vim -e -s config.js -c ":%s#const PRODUCT.*#const PRODUCT = true;#" -c ":%s#apiServer:.*#apiServer: '${2}',#" -c ":%s#authorizationCode:.*#authorizationCode: '${3}',#" -c ":wq"
     npm run dist
-    vim -e -s config.js -c ":%s#const PRODUCT.*#const PRODUCT = false;#"  -c ":%s#apiServer:.*#apiServer: 'http://localhost:3000',#" -c ":%s#authorizationCode:.*#authorizationCode: '', // 后台操作密码#" -c ":wq"
+    vim -e -s config.js -c ":%s#const PRODUCT.*#const PRODUCT = false;#"  -c ":%s#apiServer:.*#apiServer: 'http://localhost:${originPort}',#" -c ":%s#authorizationCode:.*#authorizationCode: '', // 后台操作密码#" -c ":wq"
     pushd ../dist 1>/dev/null
     tar zcvf app.tar.gz app.js package.json
     mv app.tar.gz $dir/projects/${1}/
@@ -31,9 +32,9 @@ function genDistForJavaServer() {
 
 function genDistForClient() {
     pushd ../${1}/project 1>/dev/null
-    vim -e -s config.js -c ":%s#apiServer:.*#apiServer: '${2}',#" -c ":%s#plateServer:.*#plateServer: '${2}',#" -c ":%s#socketServer:.*#socketServer: '${3}',#" -c ":wq"
+    vim -e -s config.js -c ":%s#apiServer:.*#apiServer: '${2}',#" -c ":%s#socketServer:.*#socketServer: '${3}',#" -c ":wq"
     npm run dist
-    vim -e -s config.js -c ":%s#apiServer:.*#apiServer: 'http://localhost:3000',#" -c ":%s#plateServer:.*#plateServer: 'http://localhost:3002',#"  -c ":%s#socketServer:.*#socketServer: 'ws://localhost:3000',#" -c ":wq"
+    vim -e -s config.js -c ":%s#apiServer:.*#apiServer: 'http://localhost:${originPort}',#" -c ":%s#socketServer:.*#socketServer: 'ws://localhost:${originPort}',#" -c ":wq"
     pushd ../dist 1>/dev/null
     tar zcvf app.tar.gz app.js main.css package.json public
     mv app.tar.gz $dir/projects/${1}/
@@ -55,78 +56,53 @@ function genDistForApp() {
 function show_version() {
     echo "===== version: $1 ====="
     echo "远程版本："
-    echo curl ${apiServer}/apps/${1}/version.json
-    curl ${apiServer}/apps/${1}/version.json
+    echo curl ${apiServer}/sl/apps/${1}/version.json
+    curl ${apiServer}/sl/apps/${1}/version.json
     echo
     echo "本地版本（ `pwd`/projects/${1}/version.json ）："
     cat ./projects/${1}/version.json
+    if [ "$2" != "yes" ];then
+        node -e "fs=require('fs');f=process.argv[1];v=JSON.parse(fs.readFileSync(f));v.versionName=(v.versionName.replace(/\./g,'')*1+1+'').split('').join('.');fs.writeFileSync(f,JSON.stringify(v,null,4))" ./projects/${1}/version.json
+        echo "版本号增加1之后的版本："
+        cat ./projects/${1}/version.json
+    fi
 }
 
-function show_help()
-{
+function show_help() {
     echo "xdist [-t[targets]]"
     echo ""
     echo "  -t [targets]: targets as follows:"
-    echo "      p, i, s, a [p: SPPolice_PC, i: SPImage, s: SPServer, a: SPApp, o: OWHome_PC ]"
-    echo "      uses: -t p+i+s+a+o"
+    echo "      p, s[p: SLPolice_PC, s: SLServer]"
+    echo "      uses: -t p+s"
     echo "      uses: -t all"
     echo ""
-    echo "  -v: show version"
+    echo "  -v[1: add version]: show version"
     echo ""
 }
 
-function main()
-{
+function main() {
     local has_oper p i s all targets version
-    has_oper=0; p=1; i=2; s=4; a=8; o=16; all=255;
-    while getopts :t:v opt;do
-        has_oper=1
-        case $opt in
-            t)targets=$(($OPTARG));;
-            v)version="yes";;
-            *)show_help;exit;;
-        esac
-    done
+    has_oper=0; p=1; s=2; all=255;
 
-    [ $has_oper -eq 0 ] && show_help && exit
+    __init_opts "$@"
+    __check_opts "-t" && targets=$(($_opt_))
+    __check_opts "-v" && version=${_opt_:="yes"}
+    __check_opts "-h" && show_help && exit
+    [ -z "$_hasopt_" -o -z "$targets" ] && show_help && exit
 
     if (($targets&p));then
-        if [ "$version" = "yes" ];then
-            show_version SPPolice_PC
+        if [ -n "$version" ];then
+            show_version SLPolice_PC ${version}
         else
-            genDistForClient SPPolice_PC $apiServer $socketServer
-        fi
-    fi
-
-    if (($targets&o));then
-        if [ "$version" = "yes" ];then
-            show_version OWHome_PC
-        else
-            genDistForClient OWHome_PC $apiServer $socketServer
-        fi
-    fi
-
-    if (($targets&i));then
-        if [ "$version" = "yes" ];then
-            show_version SPImage
-        else
-            genDistForServer SPImage $apiServer $authorizationCode
+            genDistForClient SLPolice_PC $apiServer $socketServer
         fi
     fi
 
     if (($targets&s));then
-        if [ "$version" = "yes" ];then
-            show_version SPServer
+        if [ -n "$version" ];then
+            show_version SLServer ${version}
         else
-            genDistForJavaServer SPServer server
-        fi
-    fi
-
-    if (($targets&a));then
-        if [ "$version" = "yes" ];then
-            show_version SPApp
-        else
-            genDistForApp SPApp
+            genDistForServer SLServer $apiServer $authorizationCode
         fi
     fi
 }
