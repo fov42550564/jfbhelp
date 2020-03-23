@@ -1,0 +1,22 @@
+#!/bin/bash
+
+function click() {
+    input tap $1 $2 1>/dev/null 2>&1
+}
+i=0
+while [ 1 ];do
+    if ((i%30 == 0));then
+        click 80 400 #auto
+        sleep 0.5
+        click 1700 630 #key4
+        sleep 0.5
+        click 80 400 #auto
+        sleep 0.5
+    fi
+    click 1290 930 #key1
+    sleep 3
+    ((i++))
+    if ((i >= 1000000));then
+        i=0;
+    fi
+done
