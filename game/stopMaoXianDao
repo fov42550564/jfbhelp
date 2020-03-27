@@ -1,6 +1,6 @@
 #!/system/bin/sh
 
-pids=(`ps |grep -w "sh"|grep -v "/sh"|awk '{print $2}'`)
+pids=(`ps|grep "S sh"|cut -d " " -f6`)
 for pid in "${pids[@]}";do
     kill -9 $pid
 done
