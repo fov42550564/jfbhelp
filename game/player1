@@ -29,6 +29,7 @@ function playWithComputer() {
         if ((i >= 1000000));then
             i=0;
         fi
+        sleep 0.1
         if ((i%30 == 0));then
             if [ "$turn" = "right" ];then
                 turn="left"
@@ -50,7 +51,6 @@ function playWithComputer() {
             continue
         fi
         click 1180 550 #普通攻击
-        sleep 0.1
     done
 }
 # 手机
@@ -75,6 +75,7 @@ function playWithPhone() {
         if ((i >= 1000000));then
             i=0;
         fi
+        sleep 0.1
         if ((i%30 == 0));then
             if [ "$turn" = "right" ];then
                 turn="left"
@@ -96,7 +97,6 @@ function playWithPhone() {
             continue
         fi
         click 1780 840 #普通攻击
-        sleep 0.1
     done
 }
 if [ -n "$1" ];then

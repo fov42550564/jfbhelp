@@ -20,6 +20,11 @@ function playWithComputer() {
     adb connect localhost:6555
     i=0
     while [ 1 ];do
+        ((i++))
+        if ((i >= 1000000));then
+            i=0;
+        fi
+        sleep 3
         if ((i%20 == 0));then
             click 60 260 #auto
             sleep 0.5
@@ -29,11 +34,6 @@ function playWithComputer() {
             sleep 0.5
         fi
         click 870 620 #key1
-        sleep 3
-        ((i++))
-        if ((i >= 1000000));then
-            i=0;
-        fi
     done
 }
 # 手机
@@ -52,6 +52,11 @@ function playWithComputer() {
 function playWithPhone() {
     i=0
     while [ 1 ];do
+        ((i++))
+        if ((i >= 1000000));then
+            i=0;
+        fi
+        sleep 3
         if ((i%20 == 0));then
             click 80 400 #auto
             sleep 0.5
@@ -61,11 +66,6 @@ function playWithPhone() {
             sleep 0.5
         fi
         click 1290 930 #key1
-        sleep 3
-        ((i++))
-        if ((i >= 1000000));then
-            i=0;
-        fi
     done
 }
 if [ -n "$1" ];then
