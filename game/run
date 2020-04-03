@@ -5,16 +5,14 @@ if [ "$1" = "-h" ];then
     exit
 fi
 
-a=${1-20}
-b=${2-80}
 
-echo 加蓝时间: $a 加血时间: $b
+echo 加蓝时间: $1 加血时间: $2
 
 expect -c "
 set timeout 30000;
 spawn adb shell;
 expect {
-    \"*\$*\" {send \"cd /sdcard/000\rsh stop\recho \\\"a=${a};b=${b}\\\" > param\rnohup sh start &\rexit\r\"}
+    \"*\$*\" {send \"cd /sdcard/000\rsh stop\recho \\\"a=${1};b=${2}\\\" > param\rnohup sh start &\rexit\r\"}
 }
 interact
 "
