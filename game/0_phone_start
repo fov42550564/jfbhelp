@@ -1,7 +1,11 @@
 #!/system/bin/sh
 source ./param
 
+a=${a:-1}
+b=${b:-1}
+
 echo a=$a b=$b
+
 function click() {
     input tap $1 $2 1>/dev/null 2>&1
 }
