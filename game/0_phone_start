@@ -11,13 +11,16 @@ while [ 1 ];do
     fi
     sleep 3
     if [ -a "/sdcard/000/mxd" ];then
-        if ((i%30 == 0));then
+        if ((i%20 == 0));then
             click 80 400 #auto
             sleep 1
             click 1700 630 #key4
             sleep 1
             click 80 400 #auto
             sleep 1
+            if ((i%80 == 0));then
+                click 1020 440 #key3
+            fi
         fi
         click 1290 930 #key1
     fi

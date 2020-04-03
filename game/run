@@ -1,0 +1,14 @@
+#!/bin/bash
+
+if [ -n "$1" ];then
+    adb push 0_phone_start /sdcard/000/start
+fi
+
+expect -c "
+set timeout 30000;
+spawn adb shell;
+expect {
+    \"*\$*\" {send \"cd /sdcard/000\rsh stop\rnohup sh start &\rexit\r\"}
+}
+interact
+"
