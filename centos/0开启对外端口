@@ -14,12 +14,14 @@ firewall-cmd --reload
 #查看list
 firewall-cmd --list-all
 
-#查看iptables
-iptables -L -n
-
 #关闭防火墙(不然mongodb不能外部访问)
 systemctl stop firewalld
 
+#开启防火墙
+systemctl start firewalld
+
+#查看状态
+systemctl status firewalld
 
 解决不能访问mysql的问题
 > use mysql;
@@ -27,9 +29,29 @@ systemctl stop firewalld
 > flush privileges;
 
 
+#查看iptables
+iptables -L -n
+
 # iptables
 
+#安装
 yum install iptables-services
-> iptables -A INPUT 1 -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT
-> service iptables save
-> systemctl start iptables.service
+
+开放22、80端口
+
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 22 -j ACCEPT
+iptables -A INPUT -p tcp --dport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+iptables -A OUTPUT -p tcp --sport 80 -m state --state NEW,ESTABLISHED -j ACCEPT
+
+#保存配置
+service iptables save
+systemctl start iptables.service
+
+取消其他端口的访问规则 (千万不要再远程的时候用)
+iptables -P INPUT DROP
+iptables -P FORWARD DROP
+iptables -P OUTPUT DROP
+如果执行了，以下修复
+iptables -A INPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
+iptables -A OUTPUT -m state --state ESTABLISHED,RELATED -j ACCEPT
