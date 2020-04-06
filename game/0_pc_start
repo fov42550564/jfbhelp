@@ -1,4 +1,10 @@
 #!/system/bin/sh
+source ./param
+
+a=${a:-1}
+b=${b:-1}
+
+echo a=$a b=$b
 
 function click() {
     input tap $1 $2 1>/dev/null 2>&1
@@ -11,13 +17,17 @@ while [ 1 ];do
     fi
     sleep 3
     if [ -a "/sdcard/000/mxd" ];then
-        if ((i%30 == 0));then
+        if ((a != 1 && i%a == 0));then
             click 60 260 #auto
             sleep 1
             click 1135 430 #key4
             sleep 1
             click 60 260 #auto
             sleep 1
+        fi
+        if ((b != 1 && i%b == 0));then
+            click 1020 440 #key3
+            sleep 0.5
         fi
         click 870 620 #key1
     fi

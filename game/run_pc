@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ "$1" = "-h" ];then
+    echo ./run 加蓝时间[default: 20] 加血时间[default: 80]
+    exit
+fi
+
+
+echo 加蓝时间: $1 加血时间: $2
+
+expect -c "
+set timeout 30000;
+spawn adb shell;
+expect {
+    \"*#*\" {send \"cd /sdcard/000\rsh stop\recho \\\"a=${1};b=${2}\\\" > param\rnohup sh start &\rexit\r\"}
+}
+interact
+"

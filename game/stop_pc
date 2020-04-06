@@ -1,0 +1,3 @@
+#!/system/bin/sh
+
+ps|grep "S sh"|cut -d " " -f7|xargs kill -9
