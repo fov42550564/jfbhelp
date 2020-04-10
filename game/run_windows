@@ -1,0 +1,18 @@
+#!/bin/bash
+
+if [ "$1" = "-h" ];then
+    echo ./run key4[default: 17] key3[default: 30]  key5[default: 20]
+    exit
+fi
+
+
+echo key4: $1 key3: $2 key5: $3
+
+expect -c "
+set timeout 30000;
+spawn adb shell;
+expect {
+    \"*\#*\" {send \"cd /sdcard/000\rsh stop\recho \\\"a=${1};b=${2};c=${3}\\\" > param\rsh start\r\"}
+}
+interact
+"
