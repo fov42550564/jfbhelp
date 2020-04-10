@@ -33,7 +33,7 @@ while [ 1 ];do
             sleep 1
         fi
         if ((c != 1 && i%c == 0));then
-            click 730 320 #key5
+            click 920 240 #key7
             sleep 1
         fi
         click 690 500 #key1
