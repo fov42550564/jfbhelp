@@ -23,6 +23,11 @@ systemctl start firewalld
 #查看状态
 systemctl status firewalld
 
+#永久关闭防火墙：
+systemctl disable firewalld
+#永久开启防火墙：
+systemctl enable firewalld
+
 解决不能访问mysql的问题
 > use mysql;
 > update user set host = '%' where user = 'root';

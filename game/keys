@@ -1,0 +1,42 @@
+### mac
+# click 870 620 #key1
+# click 920 520 #key2
+# click 1020 440 #key3
+# click 1135 430 #key4
+# click 920 400 #key5
+# click 1020 330 #key6
+# click 1135 300 #key7
+# click 60 260 #auto
+# click 1180 550 #普通攻击
+# click 1020 640 #跳跃
+# click 80 570 #左移
+# click 240 570 #右移
+
+### windows
+# click 690 500 #key1
+# click 740 420 #key2
+# click 820 370 #key3
+# click 910 340 #key4
+# click 730 320 #key5
+# click 820 260 #key6
+# click 920 240 #key7
+# click 50 210 #auto
+# click 950 450 #普通攻击
+# click 820 520 #跳跃
+# click 70 460 #左移
+# click 210 460 #右移
+
+
+### android
+# click 1290 930 #key1
+# click 1380 770 #key2
+# click 1530 670 #key3
+# click 1700 630 #key4
+# click 1380 600 #key5
+# click 1530 490 #key6
+# click 1700 450 #key7
+# click 80 400 #auto
+# click 1780 840 #普通攻击
+# click 1480 950 #跳跃
+# click 120 850 #左移
+# click 360 850 #右移
