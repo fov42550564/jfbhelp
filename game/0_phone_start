@@ -10,20 +10,22 @@ while [ 1 ];do
         i=0;
     fi
     if [ -a "/sdcard/000/mxd" ];then
-        click 950 460 #普通攻击
-        if ((i%120 == 0));then
+        # click 950 460 #普通攻击 执行间隔142ms
+        dd if=/sdcard/000/recordtap of=/dev/input/event3 $2 1>/dev/null 2>&1
+        sleep 0.1
+        if ((i%1056 == 0));then
             sleep 0.5
             click 1380 600 #key5
         fi
-        if ((i%250 == 0));then
+        if ((i%2180 == 0));then
             sleep 0.5
             click 1530 670 #key3
         fi
-        if ((i%30 == 0));then
+        if ((i%264 == 0));then
             sleep 0.5
             click 1380 770 #key2
         fi
-        if ((i%380 == 0));then
+        if ((i%3200 == 0));then
             sleep 0.5
             click 1700 630 #key4
         fi
