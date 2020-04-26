@@ -412,3 +412,18 @@ while (true) {
 
 console.log({ $and: list });
 ```
+### 用一个函数编写一个计时器，计算函数的执行时间，能做到多次计时，交叉计时
+```js
+const timeContainer = { id: 0 };
+export function __time (id, isCountinue) {
+    if (id === undefined) {
+        const _id = timeContainer.id++;
+        timeContainer[_id] = Date.now();
+        return _id;
+    } else {
+        const startTime = timeContainer[id];
+        !isCountinue && delete timeContainer[id];
+        console.log('[use time]:', Date.now() - startTime);
+    }
+}
+```
