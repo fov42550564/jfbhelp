@@ -1,0 +1,111 @@
+#!/bin/bash
+
+projects=(
+SCPolice_PC
+SCServer
+SDServer
+SFClient
+SFServer
+SIPolice_PC
+SLServer
+SOProto
+SPApp
+SPImage
+SPPolice
+SPPolice_PC
+SPServer
+SportsProto
+ThirdProtos
+whxx_yanfabu
+STServer
+SSServer
+SSClient_WX
+SSControl
+SSPolice_APP
+SSPolice
+)
+
+function clone_item_mirror() {
+    expect -c "
+    set timeout 30000;
+    spawn git clone --mirror https://gitee.com/wen_hua/${1}.git;
+    expect {
+        \"Username for*:\" {send \"${username}\r\"; exp_continue}
+        \"Password for*:\" {send \"${password}\r\"}
+    }
+    interact
+    "
+}
+
+function update_item_mirror() {
+    pushd ${1}.git
+    expect -c "
+    set timeout 30000;
+    spawn git push --mirror https://gitee.com/wen_hua/${1}.git;
+    expect {
+        \"Username for*:\" {send \"${username}\r\"; exp_continue}
+        \"Password for*:\" {send \"${password}\r\"}
+    }
+    interact
+    "
+    popd
+}
+
+function clone_mirror() {
+    for project in ${projects[@]};do
+        if ! [ -a "${project}.git" ];then
+            clone_item_mirror ${project}
+        fi
+    done
+}
+
+function update_mirror() {
+    for project in ${projects[@]};do
+        if [ -a "${project}.git" ];then
+            update_item_mirror ${project}
+        fi
+    done
+}
+
+function show_help() {
+    echo "Usage: ./xmirror -u|-c -p project[:project] -a [username:]password"
+    exit
+}
+
+function main()
+{
+    local oper oper_right project auth
+    oper_right=0
+
+    while getopts :p:a:cuh opt;do
+        oper_right=1
+        case $opt in
+            p)project="$OPTARG";;
+            a)auth="$OPTARG";;
+            c)oper=1;;
+            u)oper=2;;
+            *)show_help;;
+        esac
+    done
+
+    username="${auth%:*}"
+    password="${auth#*:}"
+    if [ "$password" = "$auth" ];then
+        username=42550564@qq.com
+    fi
+    if [ "$password" = "" ];then
+        show_help
+    fi
+
+    if [ "$project" != "" ];then
+        projects=(${project//:/ })
+    fi
+
+    case $oper in
+        1)clone_mirror;;
+        2)update_mirror;;
+        *)show_help;;
+    esac
+}
+
+main "$@"

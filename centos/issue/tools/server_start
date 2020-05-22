@@ -7,7 +7,7 @@ export DIR=/root/main
 function check_pid_start() {
     local name command count
     name="$1";command="$2";
-    count=`ps -A|grep "\<${name}"|wc -l`
+    count=`ps -A|grep "\<${name}\>"|wc -l`
     if [ 0 == ${count} ];then
         echo "start ${name}"
         ${command}
@@ -35,7 +35,7 @@ function check_pm2_start() {
 function check_java_start() {
     local dir name count
     dir="$1";name="$2";
-    count=`ps -ef |grep java|grep "\<$name"|wc -l`
+    count=`ps -ef |grep java|grep "\<$name\>"|wc -l`
     if [ $count != 0 ];then
         echo "$dir/$name is running"
     else
@@ -74,9 +74,17 @@ echo check_pid_start mongod start_mongodb
 check_pid_start mongod start_mongodb
 echo check_pid_start nginx start_nginx
 check_pid_start nginx start_nginx
+sleep 3
+
+# 官网
+mkdir -p /root/main/OWServer/download/apps/OWServer
+mkdir -p /root/main/OWServer/download/apps/OWHome_PC
+echo check_pm2_start OWServer
+check_pm2_start OWServer
+echo check_pm2_start OWHome_PC
+check_pm2_start OWHome_PC
 
 # plate
-sleep 3
 mkdir -p /root/main/SPServer/log
 mkdir -p /root/main/SPServer/download/apps/SPServer
 mkdir -p /root/main/SPServer/download/apps/SPImage
@@ -89,9 +97,6 @@ echo check_pm2_start SPPolice_PC
 check_pm2_start SPPolice_PC
 echo check_pm2_start SPImage
 check_pm2_start SPImage
-
-echo check_pm2_start OWHome_PC
-check_pm2_start OWHome_PC
 
 # city
 mkdir -p /root/main/SCServer/log
