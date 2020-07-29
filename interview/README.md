@@ -427,3 +427,9 @@ export function __time (id, isCountinue) {
     }
 }
 ```
+### 数据库会议的开始时间为startTime，结束时间为endTime，如果数据库中时间段存在，则不能创建
+```js
+function (startTime, endTime) {
+    await VideoMeetModel.findOne({ startTime: { $lt: endTime }, endTime: { $gt: startTime } });
+}
+```
