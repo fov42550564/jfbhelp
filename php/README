@@ -1,0 +1,63 @@
+一、nginx
+1. brew install nginx
+2. vim /usr/local/etc/nginx/nginx.conf
+3. 内容如下：
+worker_processes  1;
+events {
+    worker_connections  1024;
+}
+http {
+    include       mime.types;
+    default_type  application/octet-stream;
+    sendfile        on;
+    keepalive_timeout  65;
+    root /Users/fang/whxx/SmartCommunity/SMServer/ys_shequ;
+    server {
+        listen       8080;
+        server_name  localhost;
+        location / {
+            index  index.html index.php;
+        }
+        location ~ \.php$ {
+            fastcgi_pass   127.0.0.1:9000;
+            fastcgi_index  index.php;
+            fastcgi_param  SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            include        fastcgi_params;
+        }
+    }
+}
+4. nginx -s reload
+
+
+二、 php
+1. vim /etc/php.ini
+2. cd /usr/local/Cellar/php5.3.29/sbin
+3. ./php-fpm.dSYM -c /etc/php.ini
+4. 编译
+./configure \
+--prefix=/usr/local/Cellar/php5.3.29 \
+--enable-fpm \
+--with-mysql=/usr/local/Cellar/mysql/5.7.14 \
+--with-pdo-mysql=/usr/local/Cellar/mysql/5.7.14 \
+--with-xmlrpc \
+--with-openssl=/usr/local/Cellar/openssl/1.0.2r \
+--with-zlib \
+--with-freetype-dir \
+--with-gd \
+--with-jpeg-dir \
+--with-png-dir \
+--with-iconv \
+--enable-short-tags \
+--enable-sockets \
+--enable-zend-multibyte \
+--enable-soap \
+--enable-mbstring \
+--enable-static \
+--enable-gd-native-ttf \
+--with-xsl \
+--without-sqlite \
+--enable-ftp \
+--with-libxml-dir
+5.
+
+/usr/local/Cellar/php5.3.29/bin/phpize

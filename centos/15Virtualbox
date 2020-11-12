@@ -1,0 +1,23 @@
+1. 网络使用桥接网卡  en1:Wifi
+2. vim /etc/sysconfig/network-scripts/ifcfg-enp0s3
+TYPE=Ethernet #note
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=static #note
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ADDR_GEN_MODE=stable-privacy
+NAME=enp0s3
+UUID=5755f3f7-0542-4634-bd24-8de1b5d8f294
+DEVICE=enp0s3
+ONBOOT=yes #note
+IPADDR=192.168.1.189 #note
+NETMASK=255.255.255.0 #note
+GATEWAY=192.168.1.1 #note
+DNS1=8.8.8.8 #note
+DNS2=4.4.4.4 #note
+3. service network restart
