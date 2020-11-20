@@ -28,6 +28,9 @@ systemctl disable firewalld
 #永久开启防火墙：
 systemctl enable firewalld
 
+#添加某接口至某信任等级，譬如添加 eth0 至 public，再永久生效
+firewall-cmd --zone=public --add-interface=eno3 --permanent
+
 解决不能访问mysql的问题
 > use mysql;
 > update user set host = '%' where user = 'root';

@@ -6,3 +6,9 @@ chkconfig --list
 
 设置终端模式开机启动：
 chkconfig pdshop_start on
+
+查看系统的默认启动
+systemctl list-unit-files
+
+查看某个服务的状态
+systemctl status nginx
