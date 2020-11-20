@@ -12,3 +12,8 @@ systemctl list-unit-files
 
 查看某个服务的状态
 systemctl status nginx
+
+
+# pm2 的开机启动
+pm2 save
+pm2 startup
