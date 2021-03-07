@@ -1,2 +1,30 @@
-1.  解压到 /root
-2. ./install
+1. 设置本机的ip
+vim /etc/sysconfig/network-scripts/ifcfg-enp0s3
+
+TYPE=Ethernet #note
+PROXY_METHOD=none
+BROWSER_ONLY=no
+BOOTPROTO=static #note
+DEFROUTE=yes
+IPV4_FAILURE_FATAL=no
+IPV6INIT=yes
+IPV6_AUTOCONF=yes
+IPV6_DEFROUTE=yes
+IPV6_FAILURE_FATAL=no
+IPV6_ADDR_GEN_MODE=stable-privacy
+NAME=enp0s3
+UUID=5755f3f7-0542-4634-bd24-8de1b5d8f294
+DEVICE=enp0s3
+ONBOOT=yes #note
+IPADDR=192.168.1.189 #note
+NETMASK=255.255.255.0 #note
+GATEWAY=192.168.1.1 #note
+DNS1=8.8.8.8 #note
+DNS2=4.4.4.4 #note
+
+service network restart
+
+2. 修改mongo.conf中的地址为本机地址
+3. 解压到 /root
+4. 修改代码中的地址为本机地址
+5 ./install

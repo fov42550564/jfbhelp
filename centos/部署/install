@@ -1,7 +1,7 @@
 #!/bin/bash
 
-tar xvf zunyi.tar
-rm -f zunyi.tar
+tar xvf code.tar
+rm -f code.tar
 echo export PATH=$PATH:/root/tools/node/bin:/root/tools/node/lib/node_modules/npm/bin/node-gyp-bin:/root/tools/mongodb/bin >> ~/.bashrc
 cd ~
 ln -s /root/tools/node/lib/node_modules node_modules
