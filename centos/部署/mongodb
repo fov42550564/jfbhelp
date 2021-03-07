@@ -1,0 +1,10 @@
+#!/bin/bash
+
+#add for chkconfig
+#chkconfig: 2345 99 30
+#description: start for service
+#processname: service
+
+mkdir -p /home/database/mongodb/logs
+mkdir -p /home/database/mongodb/db
+/root/tools/mongodb/bin/mongod -f /home/database/mongodb/mongodb.conf
