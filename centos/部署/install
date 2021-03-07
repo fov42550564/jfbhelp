@@ -28,7 +28,7 @@ node run.js
 cd /root/main/ZYServer/test/modules/db
 ./clear
 cd /root/main/ZYServer/test/modules/story/
-
+node init.js
 
 # pm2 的开机启动
 pm2 save
