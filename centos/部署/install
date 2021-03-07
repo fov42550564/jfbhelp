@@ -1,0 +1,35 @@
+#!/bin/bash
+
+tar xvf zunyi.tar
+rm -f zunyi.tar
+echo export PATH=$PATH:/root/tools/node/bin:/root/tools/node/lib/node_modules/npm/bin/node-gyp-bin:/root/tools/mongodb/bin >> ~/.bashrc
+cd ~
+ln -s /root/tools/node/lib/node_modules node_modules
+firewall-cmd --permanent --add-port=4040/tcp
+firewall-cmd --permanent --add-port=4041/tcp
+firewall-cmd --permanent --add-port=5131/tcp
+firewall-cmd --reload
+firewall-cmd --list-all
+
+# 开启mongodb和自动重启
+mkdir -p /home/database/mongodb/
+# 修改 mongodb.conf 为本机ip
+mv mongodb.conf /home/database/mongodb/
+mv mongodb /etc/init.d/
+chmod +x /etc/init.d/mongodb
+/etc/init.d/mongodb
+chkconfig --add /etc/init.d/mongodb
+chkconfig mongodb on
+chkconfig --list
+
+# 启动程序
+cd /root/main/SOControl
+node run.js
+cd /root/main/ZYServer/test/modules/db
+./clear
+cd /root/main/ZYServer/test/modules/story/
+
+
+# pm2 的开机启动
+pm2 save
+pm2 startup
